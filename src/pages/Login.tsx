@@ -36,12 +36,12 @@ const Login = () => {
         <div className="flex justify-center mb-6">
           <div className="flex items-center">
             <Layers className="mr-2 h-8 w-8" />
-            <h1 className="text-2xl font-bold">2103 Creative</h1>
+            <h1 className="text-2xl font-bold">2103 CREATIVE</h1>
           </div>
         </div>
         
-        <h2 className="text-2xl font-bold text-center mb-1">Sistema de Gerenciamento ERP</h2>
-        <p className="text-center text-erp-gray-500 mb-6">Gerenciamento completo para indústria cerâmica</p>
+        <h2 className="text-2xl font-bold text-center mb-1">Sistema de Gerenciamento</h2>
+        <p className="text-center text-erp-gray-500 mb-6">Gerenciamento para indústria cerâmica</p>
         
         <div className="flex mb-6">
           <button
@@ -138,7 +138,7 @@ const Login = () => {
             <div className="mt-4 p-4 bg-blue-50 rounded-md flex items-start">
               <Info className="text-blue-500 mr-2 mt-0.5 h-5 w-5 flex-shrink-0" />
               <p className="text-sm text-blue-800">
-                Lembre-se de verificar seu email após o registro para ativar sua conta. Se não recebeu, tente fazer login novamente para reenviar.
+                Lembre-se de verificar seu email após o registro.
               </p>
             </div>
           )}

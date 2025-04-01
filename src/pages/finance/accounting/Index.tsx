@@ -1,21 +1,17 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { BookOpen, ClipboardEdit, PieChart, Plus } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { BookOpen, ClipboardEdit, PieChart } from 'lucide-react';
 import MainLayout from '@/components/layout/MainLayout';
 import { PageTransition } from '@/components/ui/page-transition';
-import { Button } from '@/components/ui/button';
+
+// Importando componentes usando o padrão de importação "@/"
 import AccountingLedger from '@/components/finance/accounting/AccountingLedger';
 import AccountingJournal from '@/components/finance/accounting/AccountingJournal';
 import AccountingReports from '@/components/finance/accounting/AccountingReports';
 
-const Accounting = () => {
+const AccountingPage = () => {
   const [activeTab, setActiveTab] = useState('ledger');
-  const navigate = useNavigate();
-
-  const handleNewEntry = () => {
-    navigate('/finance/accounting/new');
-  };
 
   return (
     <MainLayout>
@@ -28,13 +24,6 @@ const Accounting = () => {
                 Gerencie os lançamentos contábeis e visualize relatórios financeiros.
               </p>
             </div>
-            <Button 
-              onClick={handleNewEntry}
-              className="flex items-center gap-1"
-            >
-              <Plus className="h-4 w-4" />
-              Novo Lançamento
-            </Button>
           </div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -54,11 +43,11 @@ const Accounting = () => {
             </TabsList>
             
             <TabsContent value="ledger" className="mt-0">
-              <AccountingLedger showNewEntryButton={false} />
+              <AccountingLedger />
             </TabsContent>
             
             <TabsContent value="journal" className="mt-0">
-              <AccountingJournal showNewEntryButton={false} />
+              <AccountingJournal />
             </TabsContent>
             
             <TabsContent value="reports" className="mt-0">
@@ -71,4 +60,4 @@ const Accounting = () => {
   );
 };
 
-export default Accounting;
+export default AccountingPage;

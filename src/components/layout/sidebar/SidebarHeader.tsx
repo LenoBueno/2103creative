@@ -1,27 +1,42 @@
-
 import { Layers } from 'lucide-react';
 import { useSidebar } from '@/components/ui/sidebar';
+import { cn } from '@/lib/utils';
 
 const SidebarHeader = () => {
   const { state, toggleSidebar } = useSidebar();
   const collapsed = state === "collapsed";
 
+  const handleToggleClick = () => {
+    if (toggleSidebar) {
+      toggleSidebar();
+    }
+  };
+
   return (
-    <div 
-      className="h-16 flex items-center px-4 border-b border-sidebar-border cursor-pointer bg-sidebar w-full hover:bg-sidebar-accent/10 transition-colors"
-      onClick={toggleSidebar}
+    <button 
+      className="h-16 flex items-center px-4 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 w-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300 focus:outline-none text-left"
+      onClick={handleToggleClick}
+      aria-label={collapsed ? "Expandir sidebar" : "Recolher sidebar"}
+      type="button"
     >
-      {collapsed ? (
-        <div className="flex justify-center w-full">
-          <Layers className="text-sidebar-foreground" size={24} />
+      <div className={cn(
+        "flex items-center w-full transition-all duration-300",
+        collapsed ? "justify-center" : "justify-start"
+      )}>
+        <div className="flex items-center justify-center">
+          <Layers 
+            className="text-gray-700 dark:text-gray-300 flex-shrink-0 transition-all duration-300" 
+            size={20} 
+          />
         </div>
-      ) : (
-        <h1 className="text-xl font-bold text-sidebar-foreground flex items-center w-full">
-          <Layers className="mr-3" size={24} />
-          2103 Creative
-        </h1>
-      )}
-    </div>
+        
+        {!collapsed && (
+          <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-100 transition-all duration-300 opacity-100 tracking-tight">
+            2103 CREATIVE
+          </span>
+        )}
+      </div>
+    </button>
   );
 };
 

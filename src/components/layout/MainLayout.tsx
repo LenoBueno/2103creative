@@ -1,9 +1,7 @@
-
 import { ReactNode } from 'react';
 import Header from './Header';
-import { SidebarProvider, Sidebar, SidebarContent, SidebarHeader, SidebarFooter } from '@/components/ui/sidebar';
-import SidebarMainContent from './sidebar/SidebarContent';
-import SidebarMainFooter from './sidebar/SidebarFooter';
+import { SidebarProvider } from '@/components/ui/sidebar';
+import Sidebar from './Sidebar';
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -11,20 +9,12 @@ interface MainLayoutProps {
 
 const MainLayout = ({ children }: MainLayoutProps) => {
   return (
-    <SidebarProvider>
-      <div className="flex h-screen w-full bg-background">
-        <Sidebar>
-          <SidebarHeader />
-          <SidebarContent>
-            <SidebarMainContent />
-          </SidebarContent>
-          <SidebarFooter>
-            <SidebarMainFooter />
-          </SidebarFooter>
-        </Sidebar>
-        <div className="flex-1 flex flex-col overflow-hidden">
+    <SidebarProvider defaultOpen={true}>
+      <div className="flex h-screen w-full bg-background overflow-hidden">
+        <Sidebar />
+        <div className="flex-1 flex flex-col overflow-hidden transition-all duration-300 ease-in-out">
           <Header />
-          <main className="flex-1 overflow-y-auto p-6 bg-background text-foreground">
+          <main className="flex-1 overflow-y-auto p-6 bg-background text-foreground transition-opacity duration-300">
             {children}
           </main>
         </div>
