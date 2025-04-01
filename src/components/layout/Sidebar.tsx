@@ -45,10 +45,9 @@ const Sidebar = ({ collapsed = false, onToggle }: SidebarProps) => {
   return (
     <div 
       className={cn(
-        "h-screen bg-sidebar-background border-r border-sidebar-border overflow-y-auto flex flex-col z-10 transition-all duration-300",
+        "h-screen bg-sidebar-background border-r border-sidebar-border overflow-y-auto flex flex-col z-10",
         collapsed ? "w-16" : "w-64"
       )}
-      style={{ minWidth: collapsed ? '4rem' : '16rem', flex: 'none' }}
     >
       <SidebarHeader collapsed={collapsed} onToggle={onToggle} />
       <SidebarContent collapsed={collapsed} activeModule={activeModule} setActiveModule={setActiveModule} />

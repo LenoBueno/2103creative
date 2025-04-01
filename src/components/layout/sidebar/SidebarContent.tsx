@@ -4,16 +4,14 @@ import { useLocation } from 'react-router-dom';
 import SidebarItem from './SidebarItem';
 import SidebarSubmenu from './SidebarSubmenu';
 import { modules } from './sidebarData';
-import { cn } from '@/lib/utils';
+import { useSidebar } from '@/components/ui/sidebar';
 
-interface SidebarContentProps {
-  collapsed: boolean;
-  activeModule?: string;
-  setActiveModule?: (moduleId: string) => void;
-}
-
-const SidebarContent = ({ collapsed, activeModule = 'dashboard', setActiveModule }: SidebarContentProps) => {
+const SidebarContent = () => {
   const location = useLocation();
+  const { state } = useSidebar();
+  const collapsed = state === "collapsed";
+  const [activeModule, setActiveModule] = useState('dashboard');
+  
   const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>({
     finance: false,
     sales: false,
@@ -41,13 +39,11 @@ const SidebarContent = ({ collapsed, activeModule = 'dashboard', setActiveModule
             [module.id]: true
           }));
           
-          if (setActiveModule) {
-            setActiveModule(module.id);
-          }
+          setActiveModule(module.id);
         }
       }
     });
-  }, [location.pathname, setActiveModule]);
+  }, [location.pathname]);
 
   const toggleSubmenu = (menu: string) => {
     if (collapsed) return;
@@ -59,13 +55,11 @@ const SidebarContent = ({ collapsed, activeModule = 'dashboard', setActiveModule
   };
   
   const handleModuleClick = (moduleId: string) => {
-    if (setActiveModule) {
-      setActiveModule(moduleId);
-    }
+    setActiveModule(moduleId);
   };
 
   return (
-    <div className={cn("py-4 space-y-1 flex-grow", collapsed ? "px-2" : "px-3")}>
+    <div className="py-4 space-y-1 flex-grow">
       {modules.map((module) => (
         <div key={module.id}>
           <SidebarItem 
