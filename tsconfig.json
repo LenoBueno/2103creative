@@ -9,7 +9,6 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "typeRoots": ["./node_modules/@types", "./node_modules/@capacitor"], 
     "noImplicitAny": false,
     "noUnusedParameters": false,
     "skipLibCheck": true,
