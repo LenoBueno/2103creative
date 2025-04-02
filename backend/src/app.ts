@@ -7,6 +7,7 @@ import { errorHandler } from './shared/middleware/error-handler';
 import authRoutes from './modules/auth/routes';
 import financeiroRoutes from './modules/financeiro/routes';
 import vendasRoutes from './modules/vendas/routes';
+import fiscalRoutes from './modules/fiscal/routes';
 
 // Inicializa o app Express
 const app = express();
@@ -18,6 +19,7 @@ configureMiddleware(app);
 app.use('/api/auth', authRoutes);
 app.use('/api/financeiro', financeiroRoutes);
 app.use('/api/vendas', vendasRoutes);
+app.use('/api/fiscal', fiscalRoutes);
 
 // Rota de health check
 app.get('/api/health', (req, res) => {

@@ -43,6 +43,10 @@ import Resources from "@/pages/production/Resources";
 // Settings
 import FiscalConfig from "@/pages/settings/FiscalConfig";
 
+// Fiscal
+import NFeList from "@/pages/fiscal/NFeList";
+import NFePage from "@/pages/fiscal/NFe";
+
 function App() {
   return (
     <ThemeProvider defaultTheme="light" storageKey="erplight-theme">
@@ -81,6 +85,10 @@ function App() {
           
           {/* Settings Routes */}
           <Route path="/settings/fiscal" element={<FiscalConfig />} />
+          
+          {/* Fiscal Routes */}
+          <Route path="/fiscal/nfe" element={<NFeList />} />
+          <Route path="/fiscal/nfe/nova" element={<NFePage />} />
           
           <Route path="*" element={<NotFound />} />
         </Routes>
