@@ -57,8 +57,8 @@ function App() {
         <TooltipProvider>
           <Router>
             <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route path="/" element={<Index />} />
+              <Route path="/" element={<Login />} />
+              <Route path="/dashboard" element={<Index />} />
               
               {/* Finance routes */}
               <Route path="/finance/accounting" element={<Accounting />} />

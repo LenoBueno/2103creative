@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Eye, EyeOff, Info, Layers } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -27,7 +26,7 @@ const Login = () => {
     }
     
     // Simulate successful login
-    navigate('/');
+    navigate('/dashboard');
   };
 
   return (
