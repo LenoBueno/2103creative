@@ -1,257 +1,232 @@
 
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
 import { NFe } from '@/types/nfe';
 
 interface RevisaoFormProps {
   nfe: Partial<NFe>;
-  handleChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
 
+// Helper function to safely compare string or number types
+const isSameValue = (a: string | number, b: string | number): boolean => {
+  return String(a) === String(b);
+};
+
 const RevisaoForm = ({ nfe, handleChange }: RevisaoFormProps) => {
-  const totalItens = nfe.itens?.reduce((total, item) => total + item.valorTotal, 0) || 0;
-  
-  // Helper function to safely convert modalidade for comparison
-  const getModalidadeTransporte = (modalidade: number | string | undefined) => {
-    if (modalidade === undefined) return -1;
-    return typeof modalidade === 'string' ? parseInt(modalidade, 10) : modalidade;
-  };
-  
   return (
     <div className="space-y-6">
       <Card>
         <CardContent className="pt-6">
-          <h3 className="font-medium text-lg mb-4">Dados Gerais</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <h3 className="text-lg font-medium mb-4">Dados da Nota</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <span className="text-sm text-muted-foreground">Modelo</span>
-              <p className="font-medium">{nfe.modelo === '55' ? 'NF-e (55)' : 'NFC-e (65)'}</p>
+              <Label>Natureza da Operação</Label>
+              <p className="text-gray-700 p-2 border rounded-md bg-gray-50">
+                {nfe.naturezaOperacao || ''}
+              </p>
             </div>
             <div>
-              <span className="text-sm text-muted-foreground">Série</span>
-              <p className="font-medium">{nfe.serie}</p>
-            </div>
-            <div>
-              <span className="text-sm text-muted-foreground">Natureza da Operação</span>
-              <p className="font-medium">{nfe.naturezaOperacao}</p>
+              <Label>Modelo</Label>
+              <p className="text-gray-700 p-2 border rounded-md bg-gray-50">
+                {nfe.modelo === '55' ? 'NF-e (55)' : nfe.modelo === '65' ? 'NFC-e (65)' : ''}
+              </p>
             </div>
           </div>
         </CardContent>
       </Card>
-
+      
       <Card>
         <CardContent className="pt-6">
-          <h3 className="font-medium text-lg mb-4">Destinatário</h3>
+          <h3 className="text-lg font-medium mb-4">Emitente</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <span className="text-sm text-muted-foreground">{nfe.destinatario?.tipo === 'CPF' ? 'CPF' : 'CNPJ'}</span>
-              <p className="font-medium">{nfe.destinatario?.numero}</p>
-            </div>
-            <div>
-              <span className="text-sm text-muted-foreground">Nome / Razão Social</span>
-              <p className="font-medium">{nfe.destinatario?.nome}</p>
-            </div>
-            <div>
-              <span className="text-sm text-muted-foreground">Inscrição Estadual</span>
-              <p className="font-medium">{nfe.destinatario?.inscricaoEstadual || 'ISENTO'}</p>
-            </div>
-            <div>
-              <span className="text-sm text-muted-foreground">E-mail</span>
-              <p className="font-medium">{nfe.destinatario?.email || '-'}</p>
-            </div>
-          </div>
-
-          <Separator className="my-4" />
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <span className="text-sm text-muted-foreground">Endereço</span>
-              <p className="font-medium">
-                {nfe.destinatario?.endereco?.logradouro}, {nfe.destinatario?.endereco?.numero}
-                {nfe.destinatario?.endereco?.complemento ? ` - ${nfe.destinatario?.endereco?.complemento}` : ''}
+              <Label>CNPJ</Label>
+              <p className="text-gray-700 p-2 border rounded-md bg-gray-50">
+                {nfe.emitente?.cnpj || ''}
               </p>
             </div>
             <div>
-              <span className="text-sm text-muted-foreground">Bairro</span>
-              <p className="font-medium">{nfe.destinatario?.endereco?.bairro}</p>
-            </div>
-            <div>
-              <span className="text-sm text-muted-foreground">Cidade/UF</span>
-              <p className="font-medium">
-                {nfe.destinatario?.endereco?.cidade}/{nfe.destinatario?.endereco?.uf}
+              <Label>Nome</Label>
+              <p className="text-gray-700 p-2 border rounded-md bg-gray-50">
+                {nfe.emitente?.nome || ''}
               </p>
-            </div>
-            <div>
-              <span className="text-sm text-muted-foreground">CEP</span>
-              <p className="font-medium">{nfe.destinatario?.endereco?.cep}</p>
             </div>
           </div>
         </CardContent>
       </Card>
-
+      
       <Card>
         <CardContent className="pt-6">
-          <h3 className="font-medium text-lg mb-4">Itens</h3>
+          <h3 className="text-lg font-medium mb-4">Destinatário</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label>{nfe.destinatario?.tipo || 'Documento'}</Label>
+              <p className="text-gray-700 p-2 border rounded-md bg-gray-50">
+                {nfe.destinatario?.numero || ''}
+              </p>
+            </div>
+            <div>
+              <Label>Nome</Label>
+              <p className="text-gray-700 p-2 border rounded-md bg-gray-50">
+                {nfe.destinatario?.nome || ''}
+              </p>
+            </div>
+            <div>
+              <Label>Endereço</Label>
+              <p className="text-gray-700 p-2 border rounded-md bg-gray-50">
+                {nfe.destinatario?.endereco ? 
+                  `${nfe.destinatario.endereco.logradouro}, ${nfe.destinatario.endereco.numero} - ${nfe.destinatario.endereco.bairro}, ${nfe.destinatario.endereco.cidade}/${nfe.destinatario.endereco.uf}`
+                  : ''}
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+      
+      <Card>
+        <CardContent className="pt-6">
+          <h3 className="text-lg font-medium mb-4">Itens</h3>
           <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Código</TableHead>
-                  <TableHead>Descrição</TableHead>
-                  <TableHead>NCM</TableHead>
-                  <TableHead className="text-right">Qtde</TableHead>
-                  <TableHead className="text-right">Valor Un.</TableHead>
-                  <TableHead className="text-right">Total</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {nfe.itens?.map((item, index) => (
-                  <TableRow key={index}>
-                    <TableCell>{item.codigo}</TableCell>
-                    <TableCell>{item.descricao}</TableCell>
-                    <TableCell>{item.ncm}</TableCell>
-                    <TableCell className="text-right">{item.quantidade} {item.unidade}</TableCell>
-                    <TableCell className="text-right">
-                      {item.valorUnitario?.toLocaleString('pt-BR', {
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="bg-gray-100">
+                  <th className="px-4 py-2 text-left">Código</th>
+                  <th className="px-4 py-2 text-left">Descrição</th>
+                  <th className="px-4 py-2 text-right">Quant.</th>
+                  <th className="px-4 py-2 text-right">V. Unit.</th>
+                  <th className="px-4 py-2 text-right">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {nfe.itens && nfe.itens.map((item, index) => (
+                  <tr key={item.id || index} className="border-b border-gray-200">
+                    <td className="px-4 py-2">{item.codigo}</td>
+                    <td className="px-4 py-2">{item.descricao}</td>
+                    <td className="px-4 py-2 text-right">{item.quantidade}</td>
+                    <td className="px-4 py-2 text-right">
+                      {item.valorUnitario.toLocaleString('pt-BR', {
                         style: 'currency',
                         currency: 'BRL'
                       })}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      {item.valorTotal?.toLocaleString('pt-BR', {
+                    </td>
+                    <td className="px-4 py-2 text-right">
+                      {item.valorTotal.toLocaleString('pt-BR', {
                         style: 'currency',
                         currency: 'BRL'
                       })}
-                    </TableCell>
-                  </TableRow>
+                    </td>
+                  </tr>
                 ))}
-                <TableRow>
-                  <TableCell colSpan={5} className="text-right font-medium">Total:</TableCell>
-                  <TableCell className="text-right font-medium">
-                    {totalItens?.toLocaleString('pt-BR', {
+              </tbody>
+              <tfoot>
+                <tr className="font-medium">
+                  <td colSpan={4} className="px-4 py-2 text-right">
+                    Total:
+                  </td>
+                  <td className="px-4 py-2 text-right">
+                    {(nfe.itens?.reduce((acc, item) => acc + item.valorTotal, 0) || 0).toLocaleString('pt-BR', {
                       style: 'currency',
                       currency: 'BRL'
                     })}
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
           </div>
         </CardContent>
       </Card>
-
-      {nfe.transporte && nfe.transporte.modalidade !== 9 && (
-        <Card>
-          <CardContent className="pt-6">
-            <h3 className="font-medium text-lg mb-4">Transporte</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <span className="text-sm text-muted-foreground">Modalidade</span>
-                <p className="font-medium">
-                  {getModalidadeTransporte(nfe.transporte?.modalidade) === 0 ? '0 - Por conta do Emitente' :
-                   getModalidadeTransporte(nfe.transporte?.modalidade) === 1 ? '1 - Por conta do Destinatário' :
-                   getModalidadeTransporte(nfe.transporte?.modalidade) === 2 ? '2 - Por conta de Terceiros' : 
-                   '9 - Sem Frete'}
-                </p>
-              </div>
-              {nfe.transporte?.transportadora?.nome && (
-                <>
-                  <div>
-                    <span className="text-sm text-muted-foreground">Transportadora</span>
-                    <p className="font-medium">{nfe.transporte?.transportadora?.nome}</p>
-                  </div>
-                  <div>
-                    <span className="text-sm text-muted-foreground">CNPJ</span>
-                    <p className="font-medium">{nfe.transporte?.transportadora?.cnpj || '-'}</p>
-                  </div>
-                </>
-              )}
-              {nfe.transporte?.veiculo?.placa && (
-                <div>
-                  <span className="text-sm text-muted-foreground">Veículo</span>
-                  <p className="font-medium">{nfe.transporte?.veiculo?.placa} - {nfe.transporte?.veiculo?.uf}</p>
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
+      
       <Card>
         <CardContent className="pt-6">
-          <h3 className="font-medium text-lg mb-4">Pagamento</h3>
+          <h3 className="text-lg font-medium mb-4">Transporte</h3>
+          <div>
+            <Label>Modalidade do Frete</Label>
+            <p className="text-gray-700 p-2 border rounded-md bg-gray-50">
+              {isSameValue(nfe.transporte?.modalidade, 0) && 'Por conta do Remetente (CIF)'}
+              {isSameValue(nfe.transporte?.modalidade, 1) && 'Por conta do Destinatário (FOB)'}
+              {isSameValue(nfe.transporte?.modalidade, 2) && 'Por conta de Terceiros'}
+              {isSameValue(nfe.transporte?.modalidade, 9) && 'Sem Frete'}
+              {nfe.transporte?.modalidade === undefined && ''}
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+      
+      <Card>
+        <CardContent className="pt-6">
+          <h3 className="text-lg font-medium mb-4">Pagamento</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <span className="text-sm text-muted-foreground">Forma de Pagamento</span>
-              <p className="font-medium">
-                {nfe.pagamento?.forma === '01' ? 'Dinheiro' :
-                 nfe.pagamento?.forma === '02' ? 'Cheque' :
-                 nfe.pagamento?.forma === '03' ? 'Cartão de Crédito' :
-                 nfe.pagamento?.forma === '04' ? 'Cartão de Débito' :
-                 nfe.pagamento?.forma === '05' ? 'Crédito Loja' :
-                 nfe.pagamento?.forma === '10' ? 'Vale Alimentação' :
-                 nfe.pagamento?.forma === '15' ? 'Boleto Bancário' :
-                 nfe.pagamento?.forma === '90' ? 'Sem Pagamento' : 'Outros'}
+              <Label>Forma de Pagamento</Label>
+              <p className="text-gray-700 p-2 border rounded-md bg-gray-50">
+                {nfe.pagamento?.forma === '01' && 'Dinheiro'}
+                {nfe.pagamento?.forma === '02' && 'Cheque'}
+                {nfe.pagamento?.forma === '03' && 'Cartão de Crédito'}
+                {nfe.pagamento?.forma === '04' && 'Cartão de Débito'}
+                {nfe.pagamento?.forma === '05' && 'Crédito Loja'}
+                {nfe.pagamento?.forma === '10' && 'Vale Alimentação'}
+                {nfe.pagamento?.forma === '15' && 'Boleto Bancário'}
+                {nfe.pagamento?.forma === '90' && 'Sem Pagamento'}
+                {!nfe.pagamento?.forma && ''}
               </p>
             </div>
             <div>
-              <span className="text-sm text-muted-foreground">Valor</span>
-              <p className="font-medium">
-                {totalItens?.toLocaleString('pt-BR', {
+              <Label>Valor Total</Label>
+              <p className="text-gray-700 p-2 border rounded-md bg-gray-50">
+                {(nfe.pagamento?.valor || 0).toLocaleString('pt-BR', {
                   style: 'currency',
                   currency: 'BRL'
                 })}
               </p>
             </div>
           </div>
-
-          {nfe.pagamento?.parcelas && nfe.pagamento?.parcelas.length > 0 && (
+          
+          {nfe.pagamento?.parcelas && nfe.pagamento.parcelas.length > 0 && (
             <div className="mt-4">
-              <h4 className="text-sm font-medium mb-2">Parcelas</h4>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Nº</TableHead>
-                    <TableHead>Vencimento</TableHead>
-                    <TableHead className="text-right">Valor</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {nfe.pagamento?.parcelas.map((parcela, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{parcela.numero}</TableCell>
-                      <TableCell>
-                        {new Date(parcela.vencimento).toLocaleDateString('pt-BR')}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        {parcela.valor?.toLocaleString('pt-BR', {
-                          style: 'currency',
-                          currency: 'BRL'
-                        })}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+              <Label>Parcelas</Label>
+              <div className="overflow-x-auto mt-1">
+                <table className="w-full border-collapse">
+                  <thead>
+                    <tr className="bg-gray-100">
+                      <th className="px-4 py-2 text-left">Número</th>
+                      <th className="px-4 py-2 text-left">Vencimento</th>
+                      <th className="px-4 py-2 text-right">Valor</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {nfe.pagamento.parcelas.map((parcela, index) => (
+                      <tr key={index} className="border-b border-gray-200">
+                        <td className="px-4 py-2">{parcela.numero}</td>
+                        <td className="px-4 py-2">{parcela.vencimento}</td>
+                        <td className="px-4 py-2 text-right">
+                          {parcela.valor.toLocaleString('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL'
+                          })}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
         </CardContent>
       </Card>
-
+      
       <Card>
         <CardContent className="pt-6">
-          <Label htmlFor="informacoesAdicionais" className="mb-2">Informações Adicionais</Label>
+          <h3 className="text-lg font-medium mb-4">Informações Adicionais</h3>
           <Textarea
-            id="informacoesAdicionais"
             name="informacoesAdicionais"
             value={nfe.informacoesAdicionais || ''}
             onChange={handleChange}
-            placeholder="Informações complementares da Nota Fiscal"
-            className="min-h-[100px]"
+            placeholder="Informações complementares da nota fiscal"
+            rows={4}
           />
         </CardContent>
       </Card>

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -5,46 +6,14 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { ChevronLeft, ChevronRight, Save, Send, Download } from "lucide-react";
 import { set, get } from 'lodash';
-import { NFe } from '@/types/nfe';
+import { NFe, Item } from '@/types/nfe';
+import { v4 as uuidv4 } from 'uuid';
 
 import DadosBasicosForm from "./DadosBasicosForm";
 import ItensForm from "./ItensForm";
 import TransporteForm from "./TransporteForm";
 import PagamentoForm from "./PagamentoForm";
 import RevisaoForm from "./RevisaoForm";
-
-// Define the Item interface to match what's used in ItensForm
-interface Item {
-  id: string;
-  codigo: string;
-  descricao: string;
-  ncm: string;
-  cfop: string;
-  unidade: string;
-  quantidade: number;
-  valorUnitario: number;
-  valorTotal: number;
-  tributos: {
-    icms: {
-      cst: string;
-      aliquota: number;
-      baseCalculo: number;
-      valor: number;
-    };
-    pis: { 
-      cst: string; 
-      aliquota: number;
-      baseCalculo: number;
-      valor: number;
-    };
-    cofins: { 
-      cst: string; 
-      aliquota: number;
-      baseCalculo: number;
-      valor: number;
-    };
-  };
-}
 
 // Funções auxiliares para trabalhar com objetos aninhados
 const setNestedValue = (obj: any, path: string, value: any) => {
@@ -91,7 +60,7 @@ const NFeWizard = () => {
         cep: ''
       }
     },
-    itens: [] as Item[],  // Type cast to Item[]
+    itens: [] as Item[],
     transporte: {
       modalidade: 9
     },
@@ -118,10 +87,15 @@ const NFeWizard = () => {
   };
 
   // Controladores para itens
-  const handleAddItem = (item: Item) => {
+  const handleAddItem = (item: Omit<Item, 'id'>) => {
+    const newItem: Item = {
+      ...item,
+      id: uuidv4() // Garantir que cada item tenha um ID único
+    };
+    
     setNfe(prev => ({
       ...prev,
-      itens: [...(prev.itens || []) as Item[], item]
+      itens: [...(prev.itens || []) as Item[], newItem]
     }));
   };
 

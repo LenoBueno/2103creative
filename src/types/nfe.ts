@@ -75,17 +75,7 @@ export interface NFe {
     endereco: Endereco;
     email?: string;
   };
-  itens: Array<{
-    codigo: string;
-    descricao: string;
-    ncm: string;
-    cfop: string;
-    unidade: string;
-    quantidade: number;
-    valorUnitario: number;
-    valorTotal: number;
-    tributos: TributosItem;
-  }>;
+  itens: Array<Item>;
   transporte: {
     modalidade: number;
     volumes?: Array<Volume>;
@@ -115,4 +105,17 @@ export interface NFe {
   chaveAcesso?: string;
   protocoloAutorizacao?: string;
   protocoloCancelamento?: string;
+}
+
+export interface Item {
+  id: string;
+  codigo: string;
+  descricao: string;
+  ncm: string;
+  cfop: string;
+  unidade: string;
+  quantidade: number;
+  valorUnitario: number;
+  valorTotal: number;
+  tributos: TributosItem;
 }
