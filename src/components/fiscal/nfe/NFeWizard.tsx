@@ -1,13 +1,14 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
+import { TabsContent } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { ChevronLeft, ChevronRight, Save, Send, Download } from "lucide-react";
-import { set, get } from 'lodash';
-import { NFe, Item } from '@/types/nfe';
-import { v4 as uuidv4 } from 'uuid';
+import { Item } from '@/types/nfe';
+
+import { useNFeState } from './hooks/useNFeState';
+import { useWizardNavigation } from './hooks/useWizardNavigation';
+import WizardTabs from './components/WizardTabs';
+import WizardActions from './components/WizardActions';
 
 import DadosBasicosForm from "./DadosBasicosForm";
 import ItensForm from "./ItensForm";
@@ -15,185 +16,29 @@ import TransporteForm from "./TransporteForm";
 import PagamentoForm from "./PagamentoForm";
 import RevisaoForm from "./RevisaoForm";
 
-// Funções auxiliares para trabalhar com objetos aninhados
-const setNestedValue = (obj: any, path: string, value: any) => {
-  return set(obj, path, value);
-};
-
-const getNestedValue = (obj: any, path: string) => {
-  return get(obj, path);
-};
-
 const NFeWizard = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState("dados_basicos");
   
-  // Estado para armazenar os dados da NF-e
-  const [nfe, setNfe] = useState<Partial<NFe>>({
-    modelo: '55',
-    serie: '1',
-    naturezaOperacao: 'Venda de Mercadoria',
-    emitente: {
-      cnpj: '12345678000199',
-      inscricaoEstadual: '12345678',
-      nome: 'Empresa Teste',
-      endereco: {
-        logradouro: 'Rua Teste',
-        numero: '123',
-        bairro: 'Centro',
-        cidade: 'São Paulo',
-        uf: 'SP',
-        cep: '01001000'
-      }
-    },
-    destinatario: {
-      tipo: 'CNPJ',
-      numero: '',
-      nome: '',
-      endereco: {
-        logradouro: '',
-        numero: '',
-        bairro: '',
-        cidade: '',
-        uf: '',
-        cep: ''
-      }
-    },
-    itens: [] as Item[],
-    transporte: {
-      modalidade: 9
-    },
-    pagamento: {
-      forma: '01',
-      valor: 0
-    },
-    status: 'rascunho'
-  });
+  const { 
+    nfe, 
+    setNfe, 
+    totalNota, 
+    handleChange, 
+    handleSelectChange,
+    handleAddItem,
+    handleUpdateItem,
+    handleRemoveItem,
+    updateParcelas
+  } = useNFeState();
 
-  // Controlador de alterações em campos do formulário
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setNfe(prev => {
-      return setNestedValue({...prev}, name, value);
-    });
-  };
-
-  // Controlador para selects
-  const handleSelectChange = (field: string, value: string) => {
-    setNfe(prev => {
-      return setNestedValue({...prev}, field, value);
-    });
-  };
-
-  // Controladores para itens
-  const handleAddItem = (item: Omit<Item, 'id'>) => {
-    const newItem: Item = {
-      ...item,
-      id: uuidv4() // Garantir que cada item tenha um ID único
-    };
-    
-    setNfe(prev => ({
-      ...prev,
-      itens: [...(prev.itens || []) as Item[], newItem]
-    }));
-  };
-
-  const handleUpdateItem = (updatedItem: Item) => {
-    setNfe(prev => ({
-      ...prev,
-      itens: (prev.itens as Item[] || []).map(item => 
-        item.id === updatedItem.id ? updatedItem : item
-      )
-    }));
-  };
-
-  const handleRemoveItem = (id: string) => {
-    setNfe(prev => ({
-      ...prev,
-      itens: (prev.itens as Item[] || []).filter(item => item.id !== id)
-    }));
-  };
-
-  // Controlador para parcelas
-  const updateParcelas = (parcelas: any[]) => {
-    setNfe(prev => ({
-      ...prev,
-      pagamento: {
-        ...prev.pagamento!,
-        parcelas
-      }
-    }));
-  };
-
-  // Valor total da nota
-  const totalNota = nfe.itens?.reduce((total, item) => total + item.valorTotal, 0) || 0;
-
-  // Atualiza o valor do pagamento automaticamente
-  useEffect(() => {
-    setNfe(prev => ({
-      ...prev,
-      pagamento: {
-        ...prev.pagamento!,
-        valor: totalNota
-      }
-    }));
-  }, [totalNota]);
-
-  const handlePrevStep = () => {
-    switch (activeTab) {
-      case "itens":
-        setActiveTab("dados_basicos");
-        break;
-      case "transporte":
-        setActiveTab("itens");
-        break;
-      case "pagamento":
-        setActiveTab("transporte");
-        break;
-      case "revisao":
-        setActiveTab("pagamento");
-        break;
-      default:
-        break;
-    }
-  };
-
-  const handleNextStep = () => {
-    // Validação básica antes de avançar
-    switch (activeTab) {
-      case "dados_basicos":
-        if (!nfe.destinatario?.nome || !nfe.destinatario?.numero) {
-          toast({
-            title: "Dados incompletos",
-            description: "Preencha os dados do destinatário",
-            variant: "destructive"
-          });
-          return;
-        }
-        setActiveTab("itens");
-        break;
-      case "itens":
-        if (!nfe.itens?.length) {
-          toast({
-            title: "Itens ausentes",
-            description: "Adicione pelo menos um item à nota fiscal",
-            variant: "destructive"
-          });
-          return;
-        }
-        setActiveTab("transporte");
-        break;
-      case "transporte":
-        setActiveTab("pagamento");
-        break;
-      case "pagamento":
-        setActiveTab("revisao");
-        break;
-      default:
-        break;
-    }
-  };
+  const { 
+    activeTab, 
+    setActiveTab, 
+    handlePrevStep, 
+    handleNextStep, 
+    isStepDisabled 
+  } = useWizardNavigation({ nfe });
 
   const handleSaveDraft = () => {
     // Aqui você implementaria a lógica para salvar o rascunho
@@ -225,127 +70,66 @@ const NFeWizard = () => {
     }, 2000);
   };
 
-  const renderStepButtons = () => (
-    <div className="flex justify-between mt-8">
-      <Button
-        variant="outline"
-        onClick={handlePrevStep}
-        disabled={activeTab === "dados_basicos"}
-        className="gap-1"
-      >
-        <ChevronLeft size={16} />
-        Anterior
-      </Button>
-      
-      <div className="flex gap-2">
-        <Button
-          variant="outline"
-          onClick={handleSaveDraft}
-          className="gap-1"
-        >
-          <Save size={16} />
-          Salvar Rascunho
-        </Button>
-        
-        {activeTab === "revisao" ? (
-          <Button onClick={handleEmitirNFe} className="gap-1">
-            <Send size={16} />
-            Emitir NF-e
-          </Button>
-        ) : (
-          <Button onClick={handleNextStep} className="gap-1">
-            Próximo
-            <ChevronRight size={16} />
-          </Button>
-        )}
-      </div>
-    </div>
-  );
-
-  const tabs = [
-    { id: "dados_basicos", label: "Dados Básicos" },
-    { id: "itens", label: "Itens" },
-    { id: "transporte", label: "Transporte" },
-    { id: "pagamento", label: "Pagamento" },
-    { id: "revisao", label: "Revisão" }
-  ];
-
   return (
     <div className="space-y-6">
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid grid-cols-5 w-full">
-          {tabs.map(tab => (
-            <TabsTrigger 
-              key={tab.id} 
-              value={tab.id}
-              disabled={
-                // Desabilita abas futuras até que chegue a elas
-                (tab.id === "itens" && !nfe.destinatario?.nome) ||
-                (tab.id === "transporte" && (!nfe.itens?.length)) ||
-                (tab.id === "pagamento" && tab.id === "pagamento") ||
-                (tab.id === "revisao" && tab.id === "revisao")
-              }
-            >
-              {tab.label}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-        
-        <div className="mt-6">
-          <TabsContent value="dados_basicos">
-            <DadosBasicosForm 
-              values={nfe}
-              handleChange={handleChange}
-              handleSelectChange={handleSelectChange}
-            />
-          </TabsContent>
-          
-          <TabsContent value="itens">
-            <ItensForm 
-              itens={nfe.itens as Item[] || []}
-              onAddItem={handleAddItem}
-              onUpdateItem={handleUpdateItem}
-              onRemoveItem={handleRemoveItem}
-            />
-          </TabsContent>
-          
-          <TabsContent value="transporte">
-            <TransporteForm 
-              values={nfe}
-              handleChange={handleChange}
-              handleSelectChange={handleSelectChange}
-            />
-          </TabsContent>
-          
-          <TabsContent value="pagamento">
-            <PagamentoForm 
-              values={nfe}
-              handleChange={handleChange}
-              handleSelectChange={handleSelectChange}
-              updateParcelas={updateParcelas}
-              totalNota={totalNota}
-            />
-          </TabsContent>
-          
-          <TabsContent value="revisao">
-            <RevisaoForm 
-              nfe={nfe}
-              handleChange={handleChange}
-            />
-          </TabsContent>
-        </div>
-      </Tabs>
-
-      {renderStepButtons()}
+      <WizardTabs 
+        activeTab={activeTab}
+        onTabChange={(value) => setActiveTab(value as any)}
+        isTabDisabled={(tabId) => isStepDisabled(tabId as any)}
+      />
       
-      {nfe.status === 'autorizada' && (
-        <div className="flex justify-center mt-4">
-          <Button variant="outline" className="gap-2">
-            <Download size={16} />
-            Baixar DANFE
-          </Button>
-        </div>
-      )}
+      <div className="mt-6">
+        <TabsContent value="dados_basicos">
+          <DadosBasicosForm 
+            values={nfe}
+            handleChange={handleChange}
+            handleSelectChange={handleSelectChange}
+          />
+        </TabsContent>
+        
+        <TabsContent value="itens">
+          <ItensForm 
+            itens={nfe.itens as Item[] || []}
+            onAddItem={handleAddItem}
+            onUpdateItem={handleUpdateItem}
+            onRemoveItem={handleRemoveItem}
+          />
+        </TabsContent>
+        
+        <TabsContent value="transporte">
+          <TransporteForm 
+            values={nfe}
+            handleChange={handleChange}
+            handleSelectChange={handleSelectChange}
+          />
+        </TabsContent>
+        
+        <TabsContent value="pagamento">
+          <PagamentoForm 
+            values={nfe}
+            handleChange={handleChange}
+            handleSelectChange={handleSelectChange}
+            updateParcelas={updateParcelas}
+            totalNota={totalNota}
+          />
+        </TabsContent>
+        
+        <TabsContent value="revisao">
+          <RevisaoForm 
+            nfe={nfe}
+            handleChange={handleChange}
+          />
+        </TabsContent>
+      </div>
+
+      <WizardActions 
+        activeTab={activeTab}
+        handlePrevStep={handlePrevStep}
+        handleNextStep={handleNextStep}
+        nfe={nfe}
+        onSaveDraft={handleSaveDraft}
+        onEmitNFe={handleEmitirNFe}
+      />
     </div>
   );
 };
