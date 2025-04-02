@@ -38,6 +38,7 @@ export type SidebarItem = {
   subMenuItems?: SidebarItem[];
 };
 
+// The original SIDEBAR_ITEMS structure
 export const SIDEBAR_ITEMS: SidebarItem[] = [
   {
     title: "Dashboard",
@@ -204,6 +205,218 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
       {
         title: "Email",
         href: "/settings/email",
+        icon: Mail,
+      },
+    ],
+  },
+];
+
+// Define the modules structure that SidebarContent.tsx is expecting
+export const modules = [
+  {
+    id: 'dashboard',
+    title: 'Dashboard',
+    path: '/dashboard',
+    icon: LayoutDashboard,
+    hasSubmenu: false,
+  },
+  {
+    id: 'sales',
+    title: 'Vendas',
+    path: '/sales',
+    icon: ShoppingBasket,
+    hasSubmenu: true,
+    submenuItems: [
+      {
+        id: 'customers',
+        title: 'Clientes',
+        path: '/sales/customers',
+        icon: Users,
+      },
+      {
+        id: 'orders',
+        title: 'Pedidos',
+        path: '/sales/orders',
+        icon: ClipboardList,
+      },
+      {
+        id: 'campaigns',
+        title: 'Campanhas',
+        path: '/sales/campaigns',
+        icon: Megaphone,
+      },
+      {
+        id: 'pricing',
+        title: 'Preços',
+        path: '/sales/pricing',
+        icon: Tags,
+      },
+    ],
+  },
+  {
+    id: 'inventory',
+    title: 'Estoque',
+    path: '/inventory',
+    icon: Package,
+    hasSubmenu: true,
+    submenuItems: [
+      {
+        id: 'items',
+        title: 'Itens',
+        path: '/inventory/items',
+        icon: Box,
+      },
+      {
+        id: 'warehouses',
+        title: 'Depósitos',
+        path: '/inventory/warehouses',
+        icon: Building2,
+      },
+      {
+        id: 'transfers',
+        title: 'Transferências',
+        path: '/inventory/transfers',
+        icon: Repeat,
+      },
+    ],
+  },
+  {
+    id: 'finance',
+    title: 'Financeiro',
+    path: '/finance',
+    icon: CircleDollarSign,
+    hasSubmenu: true,
+    submenuItems: [
+      {
+        id: 'accounting',
+        title: 'Contabilidade',
+        path: '/finance/accounting',
+        icon: BookOpen,
+      },
+      {
+        id: 'treasury',
+        title: 'Tesouraria',
+        path: '/finance/treasury',
+        icon: BadgeDollarSign,
+      },
+      {
+        id: 'taxes',
+        title: 'Impostos',
+        path: '/finance/taxes',
+        icon: Calculator,
+      },
+      {
+        id: 'reports',
+        title: 'Relatórios',
+        path: '/finance/reports',
+        icon: FileText,
+      },
+    ],
+  },
+  {
+    id: 'purchases',
+    title: 'Compras',
+    path: '/purchases',
+    icon: CreditCard,
+    hasSubmenu: true,
+    submenuItems: [
+      {
+        id: 'suppliers',
+        title: 'Fornecedores',
+        path: '/purchases/suppliers',
+        icon: Truck,
+      },
+      {
+        id: 'orders',
+        title: 'Pedidos',
+        path: '/purchases/orders',
+        icon: ClipboardList,
+      },
+      {
+        id: 'quotations',
+        title: 'Cotações',
+        path: '/purchases/quotations',
+        icon: FileText,
+      },
+    ],
+  },
+  {
+    id: 'production',
+    title: 'Produção',
+    path: '/production',
+    icon: Factory,
+    hasSubmenu: true,
+    submenuItems: [
+      {
+        id: 'orders',
+        title: 'Ordens',
+        path: '/production/orders',
+        icon: ClipboardList,
+      },
+      {
+        id: 'planning',
+        title: 'Planejamento',
+        path: '/production/planning',
+        icon: CalendarDays,
+      },
+      {
+        id: 'resources',
+        title: 'Recursos',
+        path: '/production/resources',
+        icon: Table2,
+      },
+    ],
+  },
+  {
+    id: 'analytics',
+    title: 'Analytics',
+    path: '/analytics',
+    icon: BarChart3,
+    hasSubmenu: true,
+    submenuItems: [
+      {
+        id: 'dashboards',
+        title: 'Painéis',
+        path: '/analytics/dashboards',
+        icon: LineChart,
+      },
+      {
+        id: 'reports',
+        title: 'Relatórios',
+        path: '/analytics/reports',
+        icon: PieChart,
+      },
+      {
+        id: 'kpis',
+        title: 'KPIs',
+        path: '/analytics/kpis',
+        icon: Target,
+      },
+    ],
+  },
+  {
+    id: 'settings',
+    title: 'Configurações',
+    path: '/settings',
+    icon: Settings,
+    hasSubmenu: true,
+    submenuItems: [
+      {
+        id: 'fiscal',
+        title: 'Fiscal',
+        path: '/settings/fiscal',
+        icon: Receipt,
+      },
+      {
+        id: 'users',
+        title: 'Usuários',
+        path: '/settings/users',
+        icon: Users,
+      },
+      {
+        id: 'email',
+        title: 'Email',
+        path: '/settings/email',
         icon: Mail,
       },
     ],
