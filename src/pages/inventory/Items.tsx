@@ -26,8 +26,10 @@ import {
 } from '@/components/ui/alert-dialog';
 import ItemForm from '@/components/inventory/ItemForm';
 import { useToast } from '@/hooks/use-toast';
+import { Produto } from '@/types/produto';
 
-const mockItems = [
+// Mock items com estrutura fiscal
+const mockItems: Produto[] = [
   {
     id: '1',
     codigo: 'P-0001',
@@ -37,7 +39,30 @@ const mockItems = [
     grupo: 'Informática',
     estoque: 25,
     valor: 5490.00,
-    estoque_status: 'high'
+    estoque_status: 'high',
+    preco: 5490.00,
+    ncm: '8471.30.19',
+    origem: '0',
+    impostos: {
+      icms: {
+        cst: '00',
+        aliquota: 18,
+      },
+      pis: {
+        cst: '01',
+        aliquota: 1.65
+      },
+      cofins: {
+        cst: '01',
+        aliquota: 7.6
+      }
+    },
+    configEstado: {
+      RS: {
+        difal: true,
+        aliquotaInterna: 18
+      }
+    }
   },
   {
     id: '2',
@@ -48,7 +73,30 @@ const mockItems = [
     grupo: 'Informática',
     estoque: 8,
     valor: 890.00,
-    estoque_status: 'medium'
+    estoque_status: 'medium',
+    preco: 890.00,
+    ncm: '8528.52.20',
+    origem: '0',
+    impostos: {
+      icms: {
+        cst: '00',
+        aliquota: 18,
+      },
+      pis: {
+        cst: '01',
+        aliquota: 1.65
+      },
+      cofins: {
+        cst: '01',
+        aliquota: 7.6
+      }
+    },
+    configEstado: {
+      RS: {
+        difal: true,
+        aliquotaInterna: 18
+      }
+    }
   },
   {
     id: '3',
@@ -59,7 +107,30 @@ const mockItems = [
     grupo: 'Informática',
     estoque: 2,
     valor: 1290.00,
-    estoque_status: 'low'
+    estoque_status: 'low',
+    preco: 1290.00,
+    ncm: '8443.31.99',
+    origem: '0',
+    impostos: {
+      icms: {
+        cst: '00',
+        aliquota: 18,
+      },
+      pis: {
+        cst: '01',
+        aliquota: 1.65
+      },
+      cofins: {
+        cst: '01',
+        aliquota: 7.6
+      }
+    },
+    configEstado: {
+      RS: {
+        difal: false,
+        aliquotaInterna: 17
+      }
+    }
   }
 ];
 
@@ -68,17 +139,17 @@ const Items = () => {
   const [isViewItemOpen, setIsViewItemOpen] = useState(false);
   const [isEditItemOpen, setIsEditItemOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [currentItem, setCurrentItem] = useState<any>(null);
-  const [items, setItems] = useState(mockItems);
+  const [currentItem, setCurrentItem] = useState<Produto | null>(null);
+  const [items, setItems] = useState<Produto[]>(mockItems);
   const { toast } = useToast();
 
   const handleAddNewItem = (item: any) => {
-    const newItem = {
+    const newItem: Produto = {
       id: Date.now().toString(),
       ...item,
       estoque: 0,
       estoque_status: 'none',
-      valor: parseFloat(item.preco || 0)
+      valor: item.preco || 0
     };
     
     setItems([...items, newItem]);
@@ -91,8 +162,10 @@ const Items = () => {
   };
 
   const handleUpdateItem = (item: any) => {
+    if (!currentItem) return;
+    
     const updatedItems = items.map(i => 
-      i.id === currentItem.id ? { ...i, ...item, valor: parseFloat(item.preco || 0) } : i
+      i.id === currentItem.id ? { ...i, ...item, valor: item.preco || 0 } : i
     );
     
     setItems(updatedItems);
@@ -118,17 +191,17 @@ const Items = () => {
     });
   };
 
-  const openViewItem = (item: any) => {
+  const openViewItem = (item: Produto) => {
     setCurrentItem(item);
     setIsViewItemOpen(true);
   };
 
-  const openEditItem = (item: any) => {
+  const openEditItem = (item: Produto) => {
     setCurrentItem(item);
     setIsEditItemOpen(true);
   };
 
-  const openDeleteDialog = (item: any) => {
+  const openDeleteDialog = (item: Produto) => {
     setCurrentItem(item);
     setIsDeleteDialogOpen(true);
   };
@@ -192,6 +265,7 @@ const Items = () => {
                         <TableHead>Descrição</TableHead>
                         <TableHead>Unidade</TableHead>
                         <TableHead>Grupo</TableHead>
+                        <TableHead>NCM</TableHead>
                         <TableHead>Estoque</TableHead>
                         <TableHead className="text-right">Valor</TableHead>
                         <TableHead className="w-[100px]"></TableHead>
@@ -214,6 +288,7 @@ const Items = () => {
                           </TableCell>
                           <TableCell>{item.unidade}</TableCell>
                           <TableCell>{item.grupo}</TableCell>
+                          <TableCell>{item.ncm}</TableCell>
                           <TableCell>
                             <div className="flex items-center">
                               <span 
@@ -229,7 +304,7 @@ const Items = () => {
                             </div>
                           </TableCell>
                           <TableCell className="text-right">
-                            {item.valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                            {item.valor?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                           </TableCell>
                           <TableCell>
                             <div className="flex space-x-2">
@@ -321,7 +396,7 @@ const Items = () => {
           </div>
           
           {currentItem && (
-            <div className="space-y-4">
+            <div className="space-y-6">
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <p className="text-sm text-muted-foreground">Código</p>
@@ -351,8 +426,23 @@ const Items = () => {
                 <div>
                   <p className="text-sm text-muted-foreground">Valor</p>
                   <p className="font-medium">
-                    {currentItem.valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                    {currentItem.valor?.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                   </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-4">
+                <div>
+                  <p className="text-sm text-muted-foreground">NCM</p>
+                  <p className="font-medium">{currentItem.ncm}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">CST ICMS</p>
+                  <p className="font-medium">{currentItem.impostos.icms.cst}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Alíquota ICMS</p>
+                  <p className="font-medium">{currentItem.impostos.icms.aliquota}%</p>
                 </div>
               </div>
             </div>

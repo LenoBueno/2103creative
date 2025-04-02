@@ -7,9 +7,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
 import { Info, Receipt, Package, Save, X } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import FiscalSection from './fiscal/FiscalSection';
+import { Produto } from '@/types/produto';
 
 interface ItemFormProps {
   onClose: () => void;
@@ -21,9 +22,10 @@ const ItemForm = ({ onClose, onSave, editingItem }: ItemFormProps) => {
   const [formData, setFormData] = useState({
     codigo: editingItem?.codigo || '',
     descricao: editingItem?.descricao || '',
+    detalhes: editingItem?.detalhes || '',
     unidade: editingItem?.unidade || 'UN',
     grupo: editingItem?.grupo || '',
-    preco: editingItem?.preco || '',
+    preco: editingItem?.valor?.toString() || '',
     estoque: {
       estoque_minimo: editingItem?.estoque?.estoque_minimo || '',
       estoque_maximo: editingItem?.estoque?.estoque_maximo || '',
@@ -38,10 +40,13 @@ const ItemForm = ({ onClose, onSave, editingItem }: ItemFormProps) => {
       pis_aliquota: editingItem?.fiscal?.pis_aliquota || '',
       cofins_cst: editingItem?.fiscal?.cofins_cst || '',
       cofins_aliquota: editingItem?.fiscal?.cofins_aliquota || '',
+      configEstado: editingItem?.fiscal?.configEstado || {
+        RS: {}
+      }
     }
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     
     // Handle nested properties
@@ -50,7 +55,7 @@ const ItemForm = ({ onClose, onSave, editingItem }: ItemFormProps) => {
       setFormData(prev => ({
         ...prev,
         [parent]: {
-          ...prev[parent as keyof typeof prev],
+          ...(prev[parent as keyof typeof prev] as object),
           [child]: value
         }
       }));
@@ -81,9 +86,44 @@ const ItemForm = ({ onClose, onSave, editingItem }: ItemFormProps) => {
     }
   };
 
+  const handleFiscalChange = (fiscalValues: any) => {
+    setFormData(prev => ({
+      ...prev,
+      fiscal: {
+        ...prev.fiscal,
+        ...fiscalValues
+      }
+    }));
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(formData);
+    
+    // Transformar o formData para o formato esperado de Produto
+    const produtoData = {
+      ...formData,
+      preco: parseFloat(formData.preco) || 0,
+      impostos: {
+        icms: {
+          cst: formData.fiscal.icms_cst,
+          aliquota: parseFloat(formData.fiscal.icms_aliquota) || 0
+        },
+        pis: {
+          cst: formData.fiscal.pis_cst,
+          aliquota: parseFloat(formData.fiscal.pis_aliquota) || 0
+        },
+        cofins: {
+          cst: formData.fiscal.cofins_cst,
+          aliquota: parseFloat(formData.fiscal.cofins_aliquota) || 0
+        }
+      },
+      ncm: formData.fiscal.ncm,
+      cest: formData.fiscal.cest,
+      origem: formData.fiscal.origem,
+      configEstado: formData.fiscal.configEstado
+    };
+    
+    onSave(produtoData);
   };
 
   return (
@@ -109,13 +149,13 @@ const ItemForm = ({ onClose, onSave, editingItem }: ItemFormProps) => {
               <Info size={16} />
               Básico
             </TabsTrigger>
-            <TabsTrigger value="inventory" className="gap-2">
-              <Package size={16} />
-              Estoque
-            </TabsTrigger>
             <TabsTrigger value="fiscal" className="gap-2">
               <Receipt size={16} />
               Fiscal
+            </TabsTrigger>
+            <TabsTrigger value="inventory" className="gap-2">
+              <Package size={16} />
+              Estoque
             </TabsTrigger>
           </TabsList>
 
@@ -151,12 +191,22 @@ const ItemForm = ({ onClose, onSave, editingItem }: ItemFormProps) => {
                   </div>
                   <div className="md:col-span-2">
                     <Label htmlFor="descricao">Descrição</Label>
-                    <Textarea
+                    <Input
                       id="descricao"
                       name="descricao"
                       value={formData.descricao}
                       onChange={handleChange}
-                      placeholder="Descrição detalhada do item"
+                      placeholder="Descrição do item"
+                    />
+                  </div>
+                  <div className="md:col-span-2">
+                    <Label htmlFor="detalhes">Detalhes</Label>
+                    <Textarea
+                      id="detalhes"
+                      name="detalhes"
+                      value={formData.detalhes}
+                      onChange={handleChange}
+                      placeholder="Detalhes adicionais do item"
                       rows={3}
                     />
                   </div>
@@ -194,6 +244,24 @@ const ItemForm = ({ onClose, onSave, editingItem }: ItemFormProps) => {
             </Card>
           </TabsContent>
 
+          <TabsContent value="fiscal">
+            <FiscalSection 
+              initialValues={{
+                ncm: formData.fiscal.ncm,
+                cest: formData.fiscal.cest,
+                origem: formData.fiscal.origem,
+                icms_cst: formData.fiscal.icms_cst,
+                icms_aliquota: formData.fiscal.icms_aliquota,
+                pis_cst: formData.fiscal.pis_cst,
+                pis_aliquota: formData.fiscal.pis_aliquota,
+                cofins_cst: formData.fiscal.cofins_cst,
+                cofins_aliquota: formData.fiscal.cofins_aliquota,
+                configEstado: formData.fiscal.configEstado
+              }}
+              onChange={handleFiscalChange}
+            />
+          </TabsContent>
+
           <TabsContent value="inventory" className="space-y-4">
             <Card>
               <CardContent className="pt-6">
@@ -219,148 +287,6 @@ const ItemForm = ({ onClose, onSave, editingItem }: ItemFormProps) => {
                       onChange={handleChange}
                       placeholder="Quantidade máxima"
                     />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="fiscal" className="space-y-4">
-            <Card>
-              <CardContent className="pt-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="ncm">NCM</Label>
-                    <Input
-                      id="ncm"
-                      name="fiscal.ncm"
-                      value={formData.fiscal.ncm}
-                      onChange={handleChange}
-                      placeholder="NCM do produto"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="cest">CEST (opcional)</Label>
-                    <Input
-                      id="cest"
-                      name="fiscal.cest"
-                      value={formData.fiscal.cest}
-                      onChange={handleChange}
-                      placeholder="CEST do produto"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="origem">Origem</Label>
-                    <Select
-                      value={formData.fiscal.origem}
-                      onValueChange={(value) => handleSelectChange(value, 'fiscal.origem')}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecione a origem" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="0">0 - Nacional</SelectItem>
-                        <SelectItem value="1">1 - Estrangeira - Importação direta</SelectItem>
-                        <SelectItem value="2">2 - Estrangeira - Adquirida no mercado interno</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                <div className="mt-6">
-                  <h3 className="text-lg font-medium mb-4">ICMS</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="icms_cst">CST</Label>
-                      <Select
-                        value={formData.fiscal.icms_cst}
-                        onValueChange={(value) => handleSelectChange(value, 'fiscal.icms_cst')}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecione o CST" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="00">00 - Tributada integralmente</SelectItem>
-                          <SelectItem value="10">10 - Tributada com cobrança de ICMS por ST</SelectItem>
-                          <SelectItem value="20">20 - Com redução de base de cálculo</SelectItem>
-                          <SelectItem value="40">40 - Isenta</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div>
-                      <Label htmlFor="icms_aliquota">Alíquota (%)</Label>
-                      <Input
-                        id="icms_aliquota"
-                        name="fiscal.icms_aliquota"
-                        type="number"
-                        step="0.01"
-                        value={formData.fiscal.icms_aliquota}
-                        onChange={handleChange}
-                        placeholder="0,00"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-6">
-                  <h3 className="text-lg font-medium mb-4">PIS/COFINS</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="pis_cst">CST PIS</Label>
-                      <Select
-                        value={formData.fiscal.pis_cst}
-                        onValueChange={(value) => handleSelectChange(value, 'fiscal.pis_cst')}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecione o CST" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="01">01 - Operação Tributável</SelectItem>
-                          <SelectItem value="04">04 - Operação Isenta</SelectItem>
-                          <SelectItem value="06">06 - Operação com Suspensão</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div>
-                      <Label htmlFor="pis_aliquota">Alíquota PIS (%)</Label>
-                      <Input
-                        id="pis_aliquota"
-                        name="fiscal.pis_aliquota"
-                        type="number"
-                        step="0.01"
-                        value={formData.fiscal.pis_aliquota}
-                        onChange={handleChange}
-                        placeholder="0,00"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="cofins_cst">CST COFINS</Label>
-                      <Select
-                        value={formData.fiscal.cofins_cst}
-                        onValueChange={(value) => handleSelectChange(value, 'fiscal.cofins_cst')}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecione o CST" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="01">01 - Operação Tributável</SelectItem>
-                          <SelectItem value="04">04 - Operação Isenta</SelectItem>
-                          <SelectItem value="06">06 - Operação com Suspensão</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div>
-                      <Label htmlFor="cofins_aliquota">Alíquota COFINS (%)</Label>
-                      <Input
-                        id="cofins_aliquota"
-                        name="fiscal.cofins_aliquota"
-                        type="number"
-                        step="0.01"
-                        value={formData.fiscal.cofins_aliquota}
-                        onChange={handleChange}
-                        placeholder="0,00"
-                      />
-                    </div>
                   </div>
                 </div>
               </CardContent>

@@ -1,113 +1,92 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/components/ui/theme-provider";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
-import Login from "./pages/Login";
+import { Toaster } from '@/components/ui/toaster';
 
-// Finance routes
-import Accounting from "./pages/finance/Accounting";
-import AccountingNewEntry from "./pages/finance/accounting/NewEntry";
-import Treasury from "./pages/finance/Treasury";
-import Taxes from "./pages/finance/Taxes";
-import FinanceReports from "./pages/finance/Reports";
+import Index from "@/pages/Index";
+import Login from "@/pages/Login";
+import NotFound from "@/pages/NotFound";
 
-// Sales routes
-import Orders from "./pages/sales/Orders";
-import Customers from "./pages/sales/Customers";
-import Pricing from "./pages/sales/Pricing";
-import Campaigns from "./pages/sales/Campaigns";
+// Dashboard & Analytics
+import Dashboard from "@/pages/Dashboard";
+import Dashboards from "@/pages/analytics/Dashboards";
+import Reports from "@/pages/analytics/Reports";
+import KPIs from "@/pages/analytics/KPIs";
 
-// Purchases routes
-import PurchaseOrders from "./pages/purchases/Orders";
-import Suppliers from "./pages/purchases/Suppliers";
-import Quotations from "./pages/purchases/Quotations";
+// Inventory
+import Items from "@/pages/inventory/Items";
+import Warehouses from "@/pages/inventory/Warehouses";
+import Transfers from "@/pages/inventory/Transfers";
 
-// Inventory routes
-import Items from "./pages/inventory/Items";
-import Warehouses from "./pages/inventory/Warehouses";
-import Transfers from "./pages/inventory/Transfers";
-import Inventory from "./pages/inventory/Inventory";
+// Finance
+import Accounting from "@/pages/finance/Accounting";
+import Treasury from "@/pages/finance/Treasury";
+import Taxes from "@/pages/finance/Taxes";
+import FinanceReports from "@/pages/finance/Reports";
 
-// Production routes
-import ProductionOrders from "./pages/production/Orders";
-import Planning from "./pages/production/Planning";
-import Resources from "./pages/production/Resources";
+// Sales
+import Customers from "@/pages/sales/Customers";
+import Orders from "@/pages/sales/Orders";
+import Campaigns from "@/pages/sales/Campaigns";
+import Pricing from "@/pages/sales/Pricing";
 
-// Analytics routes
-import AnalyticsDashboards from "./pages/analytics/Dashboards";
-import AnalyticsReports from "./pages/analytics/Reports";
-import KPIs from "./pages/analytics/KPIs";
+// Purchases
+import Suppliers from "@/pages/purchases/Suppliers";
+import PurchaseOrders from "@/pages/purchases/Orders";
+import Quotations from "@/pages/purchases/Quotations";
 
-// Other module pages
-import HR from "./pages/HR";
-import Projects from "./pages/Projects";
-import Services from "./pages/Services";
-import Ecommerce from "./pages/Ecommerce";
+// Production
+import ProductionOrders from "@/pages/production/Orders";
+import Planning from "@/pages/production/Planning";
+import Resources from "@/pages/production/Resources";
 
-const queryClient = new QueryClient();
+// Settings
+import FiscalConfig from "@/pages/settings/FiscalConfig";
 
 function App() {
   return (
-    <ThemeProvider defaultTheme="light">
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <Router>
-            <Routes>
-              <Route path="/" element={<Login />} />
-              <Route path="/dashboard" element={<Index />} />
-              
-              {/* Finance routes */}
-              <Route path="/finance/accounting" element={<Accounting />} />
-              <Route path="/finance/accounting/new" element={<AccountingNewEntry />} />
-              <Route path="/finance/treasury" element={<Treasury />} />
-              <Route path="/finance/taxes" element={<Taxes />} />
-              <Route path="/finance/reports" element={<FinanceReports />} />
-              
-              {/* Sales routes */}
-              <Route path="/sales/orders" element={<Orders />} />
-              <Route path="/sales/customers" element={<Customers />} />
-              <Route path="/sales/pricing" element={<Pricing />} />
-              <Route path="/sales/campaigns" element={<Campaigns />} />
-              
-              {/* Purchases routes */}
-              <Route path="/purchases/orders" element={<PurchaseOrders />} />
-              <Route path="/purchases/suppliers" element={<Suppliers />} />
-              <Route path="/purchases/quotations" element={<Quotations />} />
-              
-              {/* Inventory routes */}
-              <Route path="/inventory/items" element={<Items />} />
-              <Route path="/inventory/warehouses" element={<Warehouses />} />
-              <Route path="/inventory/transfers" element={<Transfers />} />
-              <Route path="/inventory/count" element={<Inventory />} />
-              
-              {/* Production routes */}
-              <Route path="/production/orders" element={<ProductionOrders />} />
-              <Route path="/production/planning" element={<Planning />} />
-              <Route path="/production/resources" element={<Resources />} />
-              
-              {/* Analytics routes */}
-              <Route path="/analytics/dashboards" element={<AnalyticsDashboards />} />
-              <Route path="/analytics/reports" element={<AnalyticsReports />} />
-              <Route path="/analytics/kpis" element={<KPIs />} />
-              
-              {/* Other module pages */}
-              <Route path="/hr" element={<HR />} />
-              <Route path="/projects" element={<Projects />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/e-commerce" element={<Ecommerce />} />
-              
-              {/* Catch-all route */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-            <Toaster />
-            <Sonner />
-          </Router>
-        </TooltipProvider>
-      </QueryClientProvider>
+    <ThemeProvider defaultTheme="light" storageKey="erplight-theme">
+      <Router>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/login" element={<Login />} />
+          
+          <Route path="/dashboard" element={<Dashboard />} />
+          
+          <Route path="/analytics/dashboards" element={<Dashboards />} />
+          <Route path="/analytics/reports" element={<Reports />} />
+          <Route path="/analytics/kpis" element={<KPIs />} />
+          
+          <Route path="/inventory/items" element={<Items />} />
+          <Route path="/inventory/warehouses" element={<Warehouses />} />
+          <Route path="/inventory/transfers" element={<Transfers />} />
+          
+          <Route path="/finance/accounting" element={<Accounting />} />
+          <Route path="/finance/treasury" element={<Treasury />} />
+          <Route path="/finance/taxes" element={<Taxes />} />
+          <Route path="/finance/reports" element={<FinanceReports />} />
+          
+          <Route path="/sales/customers" element={<Customers />} />
+          <Route path="/sales/orders" element={<Orders />} />
+          <Route path="/sales/campaigns" element={<Campaigns />} />
+          <Route path="/sales/pricing" element={<Pricing />} />
+          
+          <Route path="/purchases/suppliers" element={<Suppliers />} />
+          <Route path="/purchases/orders" element={<PurchaseOrders />} />
+          <Route path="/purchases/quotations" element={<Quotations />} />
+          
+          <Route path="/production/orders" element={<ProductionOrders />} />
+          <Route path="/production/planning" element={<Planning />} />
+          <Route path="/production/resources" element={<Resources />} />
+          
+          {/* Settings Routes */}
+          <Route path="/settings/fiscal" element={<FiscalConfig />} />
+          
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Router>
+      
+      <Toaster />
     </ThemeProvider>
   );
 }
