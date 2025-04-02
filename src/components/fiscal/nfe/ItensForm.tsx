@@ -127,18 +127,24 @@ const ItensForm = ({ itens, onAddItem, onUpdateItem, onRemoveItem }: ItensFormPr
     
     if (name.includes('.')) {
       const [parent, child, subchild] = name.split('.');
-      setFormItem(prev => ({
-        ...prev,
-        [parent]: {
-          ...prev[parent as keyof typeof prev],
-          [child]: subchild 
-            ? { 
-                ...(prev[parent as keyof typeof prev] as any)[child],
-                [subchild]: value 
-              }
-            : value
+      setFormItem(prev => {
+        // Create a deep copy to avoid mutation
+        const newItem = { ...prev };
+        if (subchild) {
+          if (newItem[parent as keyof typeof prev] && typeof newItem[parent as keyof typeof prev] === 'object') {
+            const parentObj = { ...(newItem[parent as keyof typeof prev] as any) };
+            if (parentObj[child] && typeof parentObj[child] === 'object') {
+              parentObj[child] = { ...parentObj[child], [subchild]: value };
+            }
+            return { ...newItem, [parent]: parentObj };
+          }
+        } else {
+          if (newItem[parent as keyof typeof prev] && typeof newItem[parent as keyof typeof prev] === 'object') {
+            return { ...newItem, [parent]: { ...(newItem[parent as keyof typeof prev] as any), [child]: value } };
+          }
         }
-      }));
+        return newItem;
+      });
     } else {
       setFormItem({ ...formItem, [name]: value });
     }
@@ -150,28 +156,33 @@ const ItensForm = ({ itens, onAddItem, onUpdateItem, onRemoveItem }: ItensFormPr
       
       if (!isNaN(quantidade) && !isNaN(valorUnitario)) {
         const valorTotal = quantidade * valorUnitario;
-        setFormItem(prev => ({
-          ...prev,
-          valorTotal,
-          tributos: {
-            ...prev.tributos!,
-            icms: {
-              ...prev.tributos!.icms,
-              baseCalculo: valorTotal,
-              valor: valorTotal * (prev.tributos!.icms.aliquota / 100)
-            },
-            pis: {
-              ...prev.tributos!.pis,
-              baseCalculo: valorTotal,
-              valor: valorTotal * (prev.tributos!.pis.aliquota / 100)
-            },
-            cofins: {
-              ...prev.tributos!.cofins,
-              baseCalculo: valorTotal,
-              valor: valorTotal * (prev.tributos!.cofins.aliquota / 100)
-            }
+        setFormItem(prev => {
+          if (prev.tributos) {
+            return {
+              ...prev,
+              valorTotal,
+              tributos: {
+                ...prev.tributos,
+                icms: {
+                  ...prev.tributos.icms,
+                  baseCalculo: valorTotal,
+                  valor: valorTotal * (prev.tributos.icms.aliquota / 100)
+                },
+                pis: {
+                  ...prev.tributos.pis,
+                  baseCalculo: valorTotal,
+                  valor: valorTotal * (prev.tributos.pis.aliquota / 100)
+                },
+                cofins: {
+                  ...prev.tributos.cofins,
+                  baseCalculo: valorTotal,
+                  valor: valorTotal * (prev.tributos.cofins.aliquota / 100)
+                }
+              }
+            };
           }
-        }));
+          return { ...prev, valorTotal };
+        });
       }
     }
   };

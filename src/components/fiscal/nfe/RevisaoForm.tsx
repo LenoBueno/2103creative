@@ -15,6 +15,12 @@ interface RevisaoFormProps {
 const RevisaoForm = ({ nfe, handleChange }: RevisaoFormProps) => {
   const totalItens = nfe.itens?.reduce((total, item) => total + item.valorTotal, 0) || 0;
   
+  // Helper function to safely convert modalidade for comparison
+  const getModalidadeTransporte = (modalidade: number | string | undefined) => {
+    if (modalidade === undefined) return -1;
+    return typeof modalidade === 'string' ? parseInt(modalidade, 10) : modalidade;
+  };
+  
   return (
     <div className="space-y-6">
       <Card>
@@ -146,9 +152,9 @@ const RevisaoForm = ({ nfe, handleChange }: RevisaoFormProps) => {
               <div>
                 <span className="text-sm text-muted-foreground">Modalidade</span>
                 <p className="font-medium">
-                  {nfe.transporte?.modalidade === 0 || nfe.transporte?.modalidade === '0' ? '0 - Por conta do Emitente' :
-                   nfe.transporte?.modalidade === 1 || nfe.transporte?.modalidade === '1' ? '1 - Por conta do Destinatário' :
-                   nfe.transporte?.modalidade === 2 || nfe.transporte?.modalidade === '2' ? '2 - Por conta de Terceiros' : 
+                  {getModalidadeTransporte(nfe.transporte?.modalidade) === 0 ? '0 - Por conta do Emitente' :
+                   getModalidadeTransporte(nfe.transporte?.modalidade) === 1 ? '1 - Por conta do Destinatário' :
+                   getModalidadeTransporte(nfe.transporte?.modalidade) === 2 ? '2 - Por conta de Terceiros' : 
                    '9 - Sem Frete'}
                 </p>
               </div>

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -13,6 +12,39 @@ import ItensForm from "./ItensForm";
 import TransporteForm from "./TransporteForm";
 import PagamentoForm from "./PagamentoForm";
 import RevisaoForm from "./RevisaoForm";
+
+// Define the Item interface to match what's used in ItensForm
+interface Item {
+  id: string;
+  codigo: string;
+  descricao: string;
+  ncm: string;
+  cfop: string;
+  unidade: string;
+  quantidade: number;
+  valorUnitario: number;
+  valorTotal: number;
+  tributos: {
+    icms: {
+      cst: string;
+      aliquota: number;
+      baseCalculo: number;
+      valor: number;
+    };
+    pis: { 
+      cst: string; 
+      aliquota: number;
+      baseCalculo: number;
+      valor: number;
+    };
+    cofins: { 
+      cst: string; 
+      aliquota: number;
+      baseCalculo: number;
+      valor: number;
+    };
+  };
+}
 
 // Funções auxiliares para trabalhar com objetos aninhados
 const setNestedValue = (obj: any, path: string, value: any) => {
@@ -59,7 +91,7 @@ const NFeWizard = () => {
         cep: ''
       }
     },
-    itens: [],
+    itens: [] as Item[],  // Type cast to Item[]
     transporte: {
       modalidade: 9
     },
@@ -86,17 +118,17 @@ const NFeWizard = () => {
   };
 
   // Controladores para itens
-  const handleAddItem = (item: any) => {
+  const handleAddItem = (item: Item) => {
     setNfe(prev => ({
       ...prev,
-      itens: [...(prev.itens || []), item]
+      itens: [...(prev.itens || []) as Item[], item]
     }));
   };
 
-  const handleUpdateItem = (updatedItem: any) => {
+  const handleUpdateItem = (updatedItem: Item) => {
     setNfe(prev => ({
       ...prev,
-      itens: prev.itens?.map(item => 
+      itens: (prev.itens as Item[] || []).map(item => 
         item.id === updatedItem.id ? updatedItem : item
       )
     }));
@@ -105,7 +137,7 @@ const NFeWizard = () => {
   const handleRemoveItem = (id: string) => {
     setNfe(prev => ({
       ...prev,
-      itens: prev.itens?.filter(item => item.id !== id)
+      itens: (prev.itens as Item[] || []).filter(item => item.id !== id)
     }));
   };
 
@@ -296,7 +328,7 @@ const NFeWizard = () => {
           
           <TabsContent value="itens">
             <ItensForm 
-              itens={nfe.itens || []}
+              itens={nfe.itens as Item[] || []}
               onAddItem={handleAddItem}
               onUpdateItem={handleUpdateItem}
               onRemoveItem={handleRemoveItem}
