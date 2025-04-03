@@ -1,5 +1,5 @@
 
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Toaster } from '@/components/ui/toaster';
 
@@ -41,7 +41,10 @@ import Planning from "@/pages/production/Planning";
 import Resources from "@/pages/production/Resources";
 
 // Settings
+import Settings from "@/pages/settings/Settings";
 import FiscalConfig from "@/pages/settings/FiscalConfig";
+import Users from "@/pages/settings/Users";
+import Email from "@/pages/settings/Email";
 
 // Fiscal
 import NFeList from "@/pages/fiscal/NFeList";
@@ -84,7 +87,12 @@ function App() {
           <Route path="/production/resources" element={<Resources />} />
           
           {/* Settings Routes */}
-          <Route path="/settings/fiscal" element={<FiscalConfig />} />
+          <Route path="/settings" element={<Settings />}>
+            <Route index element={<Navigate to="/settings/fiscal" replace />} />
+            <Route path="fiscal" element={<FiscalConfig />} />
+            <Route path="users" element={<Users />} />
+            <Route path="email" element={<Email />} />
+          </Route>
           
           {/* Fiscal Routes */}
           <Route path="/fiscal/nfe" element={<NFeList />} />

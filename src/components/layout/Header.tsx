@@ -1,19 +1,27 @@
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   Bell, 
   MessageCircle, 
   Search,
-  ChevronDown,
   User,
   Settings,
   LogOut,
   HelpCircle,
-  Menu
+  Menu,
+  Mail,
+  Receipt
 } from 'lucide-react';
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { useTheme } from "@/components/ui/theme-provider";
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface HeaderProps {
   onToggleSidebar?: () => void;
@@ -64,54 +72,54 @@ const Header = ({ onToggleSidebar }: HeaderProps) => {
           <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
         </button>
         
-        <Popover>
-          <PopoverTrigger asChild>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
             <button className="flex items-center space-x-2 p-1.5 rounded-md hover:bg-muted">
               <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-medium">
                 JD
               </div>
-              <ChevronDown size={16} className="text-foreground" />
             </button>
-          </PopoverTrigger>
-          <PopoverContent className="w-56 p-0" align="end">
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56 p-0" align="end">
             <div className="p-4 border-b border-border">
               <p className="font-medium text-sm">João Silva</p>
               <p className="text-xs text-muted-foreground">joao.silva@exemplo.com</p>
             </div>
             <div className="py-2">
-              <button 
-                className="w-full flex items-center px-4 py-2 text-sm hover:bg-muted text-left"
+              <DropdownMenuItem 
+                className="w-full px-4 py-2 text-sm cursor-pointer"
                 onClick={() => navigate('/profile')}
               >
                 <User size={16} className="mr-2 text-muted-foreground" />
                 Perfil
-              </button>
-              <button 
-                className="w-full flex items-center px-4 py-2 text-sm hover:bg-muted text-left"
-                onClick={() => navigate('/settings')}
+              </DropdownMenuItem>
+              <DropdownMenuItem 
+                className="w-full flex items-center px-4 py-2 text-sm cursor-pointer"
+                onClick={() => navigate('/settings/fiscal')}
               >
                 <Settings size={16} className="mr-2 text-muted-foreground" />
                 Configurações
-              </button>
-              <button 
-                className="w-full flex items-center px-4 py-2 text-sm hover:bg-muted text-left"
+              </DropdownMenuItem>
+              <DropdownMenuItem 
+                className="w-full flex items-center px-4 py-2 text-sm cursor-pointer"
                 onClick={() => window.open('https://suporte.exemplo.com', '_blank')}
               >
                 <HelpCircle size={16} className="mr-2 text-muted-foreground" />
                 Ajuda & Suporte
-              </button>
+              </DropdownMenuItem>
             </div>
-            <div className="border-t border-border py-2">
-              <button 
-                className="w-full flex items-center px-4 py-2 text-sm hover:bg-muted text-left text-red-500"
+            <DropdownMenuSeparator />
+            <div className="py-2">
+              <DropdownMenuItem 
+                className="w-full flex items-center px-4 py-2 text-sm text-red-500 cursor-pointer"
                 onClick={handleLogout}
               >
                 <LogOut size={16} className="mr-2" />
                 Sair
-              </button>
+              </DropdownMenuItem>
             </div>
-          </PopoverContent>
-        </Popover>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </header>
   );

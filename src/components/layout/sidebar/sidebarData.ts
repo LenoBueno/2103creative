@@ -1,4 +1,3 @@
-
 import {
   LayoutDashboard,
   ShoppingBasket,
@@ -9,7 +8,6 @@ import {
   Factory,
   ClipboardList,
   FileText,
-  Settings,
   Truck,
   Box,
   Repeat,
@@ -23,11 +21,9 @@ import {
   LineChart,
   PieChart,
   Target,
-  Mail,
   CalendarDays,
   Table2,
-  Megaphone,
-  Receipt
+  Megaphone
 } from "lucide-react";
 
 export type SidebarItem = {
@@ -184,28 +180,6 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
         title: "KPIs",
         href: "/analytics/kpis",
         icon: Target,
-      },
-    ],
-  },
-  {
-    title: "Configurações",
-    icon: Settings,
-    submenu: true,
-    subMenuItems: [
-      {
-        title: "Fiscal",
-        href: "/settings/fiscal",
-        icon: Receipt,
-      },
-      {
-        title: "Usuários",
-        href: "/settings/users",
-        icon: Users,
-      },
-      {
-        title: "Email",
-        href: "/settings/email",
-        icon: Mail,
       },
     ],
   },
@@ -391,33 +365,6 @@ export const modules = [
         title: 'KPIs',
         path: '/analytics/kpis',
         icon: Target,
-      },
-    ],
-  },
-  {
-    id: 'settings',
-    title: 'Configurações',
-    path: '/settings',
-    icon: Settings,
-    hasSubmenu: true,
-    submenuItems: [
-      {
-        id: 'fiscal',
-        title: 'Fiscal',
-        path: '/settings/fiscal',
-        icon: Receipt,
-      },
-      {
-        id: 'users',
-        title: 'Usuários',
-        path: '/settings/users',
-        icon: Users,
-      },
-      {
-        id: 'email',
-        title: 'Email',
-        path: '/settings/email',
-        icon: Mail,
       },
     ],
   },
