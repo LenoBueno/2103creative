@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -95,18 +96,32 @@ const RSFiscalSettings = () => {
     }));
   };
 
-  const handleNestedInputChange = <K extends keyof RSConfigState, N extends keyof RSConfigState[K]>(
+  // Fixed the spread type error by explicitly typing the nested objects
+  const handleNestedInputChange = <K extends keyof RSConfigState>(
     parent: K, 
-    field: N, 
-    value: RSConfigState[K][N]
+    field: string, 
+    value: any
   ) => {
-    setRsConfig(prev => ({
-      ...prev,
-      [parent]: {
-        ...prev[parent],
-        [field]: value
+    setRsConfig(prev => {
+      if (parent === 'reducaoICMS') {
+        return {
+          ...prev,
+          reducaoICMS: {
+            ...prev.reducaoICMS,
+            [field]: value
+          }
+        };
+      } else if (parent === 'difAliquotas') {
+        return {
+          ...prev,
+          difAliquotas: {
+            ...prev.difAliquotas,
+            [field]: value
+          }
+        };
       }
-    }));
+      return prev;
+    });
   };
 
   const handleSefazChange = (field: keyof SefazCredentials, value: string) => {
