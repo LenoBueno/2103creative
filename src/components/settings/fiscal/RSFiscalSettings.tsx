@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -11,10 +10,46 @@ import { Save, PlusCircle, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import ICMSRSForm from '@/components/inventory/fiscal/ICMSRSForm';
 
+interface ReducaoICMS {
+  ativo: boolean;
+  percentual: number;
+}
+
+interface DifAliquotas {
+  ativo: boolean;
+  percentualInterna: number;
+  percentualInterestadual: number;
+}
+
+interface RSConfigState {
+  difal: boolean;
+  aliquotaInterna: number;
+  regimeTributario: string;
+  inscricaoEstadual: string;
+  utilizaNFCe: boolean;
+  utilizaNFe: boolean;
+  serieNFCe: string;
+  serieNFe: string;
+  ambienteProducao: boolean;
+  cscId: string;
+  cscToken: string;
+  modeloImpressaoNFCe: string;
+  enviarEmailAutomatico: boolean;
+  reducaoICMS: ReducaoICMS;
+  difAliquotas: DifAliquotas;
+}
+
+interface SefazCredentials {
+  username: string;
+  password: string;
+  token: string;
+  apiEndpoint: string;
+}
+
 const RSFiscalSettings = () => {
   const { toast } = useToast();
 
-  const [rsConfig, setRsConfig] = useState({
+  const [rsConfig, setRsConfig] = useState<RSConfigState>({
     difal: true,
     aliquotaInterna: 18,
     regimeTributario: 'normal',
@@ -39,38 +74,42 @@ const RSFiscalSettings = () => {
     }
   });
 
-  const [sefazCredentials, setSefazCredentials] = useState({
+  const [sefazCredentials, setSefazCredentials] = useState<SefazCredentials>({
     username: '',
     password: '',
     token: '',
     apiEndpoint: 'https://www.sefazrs.rs.gov.br/ws/nfce/NFeAutorizacao4.asmx',
   });
 
-  const handleRSConfigChange = (values: any) => {
+  const handleRSConfigChange = (values: Partial<RSConfigState>) => {
     setRsConfig(prev => ({
       ...prev,
       ...values
     }));
   };
 
-  const handleInputChange = (field: string, value: any) => {
+  const handleInputChange = (field: keyof RSConfigState, value: any) => {
     setRsConfig(prev => ({
       ...prev,
       [field]: value
     }));
   };
 
-  const handleNestedInputChange = (parent: string, field: string, value: any) => {
+  const handleNestedInputChange = <K extends keyof RSConfigState, N extends keyof RSConfigState[K]>(
+    parent: K, 
+    field: N, 
+    value: RSConfigState[K][N]
+  ) => {
     setRsConfig(prev => ({
       ...prev,
       [parent]: {
-        ...prev[parent as keyof typeof prev],
+        ...prev[parent],
         [field]: value
       }
     }));
   };
 
-  const handleSefazChange = (field: string, value: string) => {
+  const handleSefazChange = (field: keyof SefazCredentials, value: string) => {
     setSefazCredentials(prev => ({
       ...prev,
       [field]: value
@@ -103,7 +142,6 @@ const RSFiscalSettings = () => {
           <TabsTrigger value="sefaz">SEFAZ</TabsTrigger>
         </TabsList>
 
-        {/* Configurações Gerais */}
         <TabsContent value="geral">
           <Card>
             <CardHeader>
@@ -257,7 +295,6 @@ const RSFiscalSettings = () => {
           </Card>
         </TabsContent>
 
-        {/* Configurações ICMS */}
         <TabsContent value="icms">
           <Card>
             <CardHeader>
@@ -308,7 +345,6 @@ const RSFiscalSettings = () => {
           </Card>
         </TabsContent>
 
-        {/* Configurações DIFAL */}
         <TabsContent value="difal">
           <Card>
             <CardHeader>
@@ -376,7 +412,6 @@ const RSFiscalSettings = () => {
           </Card>
         </TabsContent>
 
-        {/* Credenciais SEFAZ */}
         <TabsContent value="sefaz">
           <Card>
             <CardHeader>
