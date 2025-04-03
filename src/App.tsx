@@ -55,10 +55,13 @@ function App() {
     <ThemeProvider defaultTheme="light" storageKey="erplight-theme">
       <Router>
         <Routes>
-          <Route path="/" element={<Index />} />
+          {/* Redirect root to login page */}
+          <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<Login />} />
           
+          {/* Protected routes that need authentication */}
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/menu" element={<Index />} />
           
           <Route path="/analytics/dashboards" element={<Dashboards />} />
           <Route path="/analytics/reports" element={<Reports />} />
