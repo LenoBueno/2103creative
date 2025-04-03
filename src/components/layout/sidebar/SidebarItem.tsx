@@ -11,7 +11,7 @@ export interface SidebarItemProps {
   path: string;
   expanded?: boolean;
   hasSubmenu?: boolean;
-  onToggleSubmenu?: (e: MouseEvent<HTMLDivElement>) => void;
+  onToggleSubmenu?: (e: MouseEvent) => void;  // Updated type to be generic MouseEvent
   onClick?: () => void;
   collapsed?: boolean;
 }
@@ -28,10 +28,20 @@ const SidebarItem = ({
   collapsed 
 }: SidebarItemProps) => {
   
-  const handleClick = (e: MouseEvent<HTMLDivElement>) => {
+  const handleClick = () => {
     // Call the onClick handler
     if (onClick) {
       onClick();
+    }
+  };
+
+  const handleToggle = (e: MouseEvent) => {
+    // Stop propagation
+    e.stopPropagation();
+    
+    // Call the onToggleSubmenu handler if provided
+    if (onToggleSubmenu) {
+      onToggleSubmenu(e);
     }
   };
   
@@ -60,10 +70,7 @@ const SidebarItem = ({
                 "text-gray-400 dark:text-gray-500 transition-transform duration-300 flex-shrink-0",
                 expanded && "transform rotate-180"
               )} 
-              onClick={onToggleSubmenu ? (e) => {
-                e.stopPropagation();
-                onToggleSubmenu(e);
-              } : undefined}
+              onClick={handleToggle}
             />
           )}
         </>
