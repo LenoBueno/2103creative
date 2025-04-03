@@ -1,3 +1,4 @@
+
 import { ReactNode } from 'react';
 import Header from './Header';
 import { SidebarProvider } from '@/components/ui/sidebar';
@@ -14,7 +15,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
         <Sidebar />
         <div className="flex-1 flex flex-col overflow-hidden transition-all duration-300 ease-in-out">
           <Header />
-          <main className="flex-1 overflow-y-auto p-6 bg-background text-foreground transition-opacity duration-300">
+          <main className="flex-1 overflow-y-auto p-6 bg-background text-foreground">
             {children}
           </main>
         </div>

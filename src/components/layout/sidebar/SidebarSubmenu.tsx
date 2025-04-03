@@ -1,42 +1,45 @@
-import { Link, useLocation } from 'react-router-dom';
-import { cn } from '@/lib/utils';
-import { useDeviceType } from '@/hooks/use-device-type';
 
-interface SidebarSubmenuProps {
-  items: {
-    title: string;
-    path: string;
-  }[];
+import { cn } from '@/lib/utils';
+
+interface SidebarSubmenuItemType {
+  id: string;
+  title: string;
+  path: string;
+  icon?: any;
 }
 
-const SidebarSubmenu = ({ items }: SidebarSubmenuProps) => {
-  const location = useLocation();
-  const { isMobile } = useDeviceType();
-  
+interface SidebarSubmenuProps {
+  items: SidebarSubmenuItemType[];
+  onClick?: (itemId: string, path: string) => void;
+}
+
+const SidebarSubmenu = ({ items, onClick }: SidebarSubmenuProps) => {
+  const handleClick = (itemId: string, path: string) => {
+    if (onClick) {
+      onClick(itemId, path);
+    }
+  };
+
   return (
-    <div className={cn(
-      "pl-8 space-y-1 pt-1 pb-1",
-      isMobile && "pl-4" // Less padding on mobile
-    )}>
-      {items.map((item) => {
-        const isActive = location.pathname === item.path;
-        
-        return (
-          <Link 
-            key={item.path} 
-            to={item.path} 
+    <ul className="pl-10 pr-2 py-1 space-y-1">
+      {items.map((item) => (
+        <li key={item.id}>
+          <div
+            onClick={() => handleClick(item.id, item.path)}
             className={cn(
-              "erp-sidebar-item text-sm block w-full",
-              isActive && "active font-medium",
-              isMobile && "py-3" // Taller touch target on mobile
+              "flex items-center h-8 text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md px-2 transition-colors cursor-pointer",
             )}
-            aria-current={isActive ? "page" : undefined}
           >
-            {item.title}
-          </Link>
-        );
-      })}
-    </div>
+            {item.icon && (
+              <div className="text-gray-500 dark:text-gray-400 mr-2">
+                <item.icon size={16} />
+              </div>
+            )}
+            <span className="truncate">{item.title}</span>
+          </div>
+        </li>
+      ))}
+    </ul>
   );
 };
 

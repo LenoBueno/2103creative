@@ -1,3 +1,4 @@
+
 import { ReactNode, MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronDown } from 'lucide-react';
@@ -10,7 +11,7 @@ export interface SidebarItemProps {
   path: string;
   expanded?: boolean;
   hasSubmenu?: boolean;
-  onToggleSubmenu?: () => void;
+  onToggleSubmenu?: (e: MouseEvent<HTMLDivElement>) => void;
   onClick?: () => void;
   collapsed?: boolean;
 }
@@ -27,25 +28,17 @@ const SidebarItem = ({
   collapsed 
 }: SidebarItemProps) => {
   
-  const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
-    // Prevent default Link behavior for submenu items
-    if (hasSubmenu && onToggleSubmenu) {
-      e.preventDefault();
-      e.stopPropagation();
-      onToggleSubmenu();
-    }
-    
-    // Call the onClick handler if provided
+  const handleClick = (e: MouseEvent<HTMLDivElement>) => {
+    // Call the onClick handler
     if (onClick) {
       onClick();
     }
   };
   
   return (
-    <Link 
-      to={path}
+    <div 
       className={cn(
-        "flex items-center h-10 px-4 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-all duration-300 ease-in-out mx-2",
+        "flex items-center h-10 px-4 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-all duration-300 ease-in-out mx-2 cursor-pointer",
         active && "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white font-medium"
       )}
       onClick={handleClick}
@@ -67,11 +60,15 @@ const SidebarItem = ({
                 "text-gray-400 dark:text-gray-500 transition-transform duration-300 flex-shrink-0",
                 expanded && "transform rotate-180"
               )} 
+              onClick={onToggleSubmenu ? (e) => {
+                e.stopPropagation();
+                onToggleSubmenu(e);
+              } : undefined}
             />
           )}
         </>
       )}
-    </Link>
+    </div>
   );
 };
 

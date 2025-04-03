@@ -1,5 +1,6 @@
+
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import SidebarItem from './SidebarItem';
 import SidebarSubmenu from './SidebarSubmenu';
 import { modules } from './sidebarData';
@@ -7,6 +8,7 @@ import { useSidebar } from '@/components/ui/sidebar';
 
 const SidebarContent = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
   const [activeModule, setActiveModule] = useState('dashboard');
@@ -74,9 +76,12 @@ const SidebarContent = () => {
     }));
   };
   
-  const handleModuleClick = (moduleId: string) => {
-    // Only set active module without toggling sidebar state
+  const handleModuleClick = (moduleId: string, path: string) => {
+    // Set active module
     setActiveModule(moduleId);
+    
+    // Navigate to the route
+    navigate(path);
   };
 
   return (
@@ -90,13 +95,16 @@ const SidebarContent = () => {
             path={module.path}
             hasSubmenu={module.hasSubmenu}
             expanded={expandedMenus[module.id]}
-            onToggleSubmenu={() => toggleSubmenu(module.id)}
-            onClick={() => handleModuleClick(module.id)}
+            onToggleSubmenu={(e) => toggleSubmenu(module.id, e)}
+            onClick={() => handleModuleClick(module.id, module.path)}
             collapsed={collapsed}
           />
           
           {module.hasSubmenu && expandedMenus[module.id] && !collapsed && module.submenuItems && (
-            <SidebarSubmenu items={module.submenuItems} />
+            <SidebarSubmenu 
+              items={module.submenuItems} 
+              onClick={(itemId, path) => navigate(path)}
+            />
           )}
         </div>
       ))}
