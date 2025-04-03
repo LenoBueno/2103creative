@@ -6,8 +6,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Save, Upload, FileText } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import ICMSRSForm from '@/components/inventory/fiscal/ICMSRSForm';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import RSFiscalSettings from '@/components/settings/fiscal/RSFiscalSettings';
 
 const FiscalConfig = () => {
   const { toast } = useToast();
@@ -19,11 +19,6 @@ const FiscalConfig = () => {
     file: null as File | null,
   });
 
-  const [rsConfig, setRsConfig] = useState({
-    difal: true,
-    aliquotaInterna: 18,
-  });
-  
   const handleCertChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, files } = e.target;
     
@@ -34,30 +29,16 @@ const FiscalConfig = () => {
     }
   };
 
-  const handleRSConfigChange = (values: any) => {
-    setRsConfig(values);
-  };
-
   const handleSaveCertificado = () => {
-    // Aqui implementaria a lógica de salvar o certificado
     console.log('Salvando certificado:', certData);
     toast({
       title: "Certificado salvo",
       description: "O certificado digital foi salvo com sucesso.",
     });
   };
-
-  const handleSaveRSConfig = () => {
-    // Aqui implementaria a lógica de salvar a configuração RS
-    console.log('Salvando configuração RS:', rsConfig);
-    toast({
-      title: "Configuração salva",
-      description: "As configurações do RS foram salvas com sucesso.",
-    });
-  };
   
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <Tabs defaultValue="certificado" className="space-y-4">
         <TabsList>
           <TabsTrigger value="certificado">Certificado Digital</TabsTrigger>
@@ -141,24 +122,7 @@ const FiscalConfig = () => {
         </TabsContent>
         
         <TabsContent value="rs" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg font-medium">Configurações ICMS/RS</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ICMSRSForm 
-                initialValues={rsConfig}
-                onChange={handleRSConfigChange}
-              />
-              
-              <div className="flex justify-end mt-6">
-                <Button onClick={handleSaveRSConfig} className="gap-1">
-                  <Save size={16} />
-                  Salvar Configurações
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          <RSFiscalSettings />
         </TabsContent>
       </Tabs>
     </div>

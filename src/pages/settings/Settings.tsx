@@ -1,6 +1,6 @@
 
-import { useState } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import MainLayout from '@/components/layout/MainLayout';
 import PageHeader from '@/components/common/PageHeader';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -8,7 +8,16 @@ import { Receipt, Users, Mail } from 'lucide-react';
 
 const Settings = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState<string>('fiscal');
+
+  // Update active tab based on URL path
+  useEffect(() => {
+    const path = location.pathname.split('/').pop();
+    if (path && ['fiscal', 'users', 'email'].includes(path)) {
+      setActiveTab(path);
+    }
+  }, [location.pathname]);
 
   const handleTabChange = (tabValue: string) => {
     setActiveTab(tabValue);
