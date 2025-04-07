@@ -59,8 +59,8 @@ function App() {
           {/* Login page */}
           <Route path="/login" element={<Login />} />
           
-          {/* Redirect root to dashboard */}
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          {/* Redirect root to login */}
+          <Route path="/" element={<Navigate to="/login" replace />} />
           
           {/* Protected routes that need authentication */}
           <Route path="/dashboard" element={<Dashboard />} />

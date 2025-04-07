@@ -98,37 +98,13 @@ const Header = ({ onToggleSidebar }: HeaderProps) => {
                 Perfil
               </DropdownMenuItem>
               
-              <DropdownMenuSub>
-                <DropdownMenuSubTrigger className="w-full px-4 py-2 text-sm cursor-pointer">
-                  <Settings size={16} className="mr-2 text-muted-foreground" />
-                  Configurações
-                </DropdownMenuSubTrigger>
-                <DropdownMenuPortal>
-                  <DropdownMenuSubContent>
-                    <DropdownMenuItem 
-                      className="w-full flex items-center px-4 py-2 text-sm cursor-pointer"
-                      onClick={() => navigate('/settings/fiscal')}
-                    >
-                      <Receipt size={16} className="mr-2 text-muted-foreground" />
-                      Fiscal
-                    </DropdownMenuItem>
-                    <DropdownMenuItem 
-                      className="w-full flex items-center px-4 py-2 text-sm cursor-pointer"
-                      onClick={() => navigate('/settings/users')}
-                    >
-                      <User size={16} className="mr-2 text-muted-foreground" />
-                      Usuários
-                    </DropdownMenuItem>
-                    <DropdownMenuItem 
-                      className="w-full flex items-center px-4 py-2 text-sm cursor-pointer"
-                      onClick={() => navigate('/settings/email')}
-                    >
-                      <Mail size={16} className="mr-2 text-muted-foreground" />
-                      Email
-                    </DropdownMenuItem>
-                  </DropdownMenuSubContent>
-                </DropdownMenuPortal>
-              </DropdownMenuSub>
+              <DropdownMenuItem 
+                className="w-full px-4 py-2 text-sm cursor-pointer"
+                onClick={() => navigate('/settings')}
+              >
+                <Settings size={16} className="mr-2 text-muted-foreground" />
+                Configurações
+              </DropdownMenuItem>
               
               <DropdownMenuItem 
                 className="w-full flex items-center px-4 py-2 text-sm cursor-pointer"

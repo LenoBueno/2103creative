@@ -29,6 +29,7 @@ import {
   DOCUMENT_TYPE_OPTIONS,
   BANK_OPTIONS
 } from "@/types/client";
+import { Card, CardContent } from "@/components/ui/card";
 
 const ClientForm = () => {
   const { id } = useParams();
@@ -127,396 +128,401 @@ const ClientForm = () => {
             </TabsList>
             
             <TabsContent value="personal" className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-4">
-                {/* Tipo de Pessoa */}
-                <div>
-                  <Label className="block text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                    Tipo de Pessoa
-                  </Label>
-                  <RadioGroup defaultValue={client.type} className="flex gap-2 mt-2" onValueChange={handleTypeChange}>
+              {/* Tipo de Pessoa */}
+              <Card className="shadow-sm border-gray-200">
+                <CardContent className="pt-6">
+                  <h3 className="text-lg font-medium mb-4">Pessoa Física ou Jurídica?</h3>
+                  <RadioGroup defaultValue={client.type} className="flex gap-4" onValueChange={handleTypeChange}>
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="physical" id="physical" className="peer h-4 w-4 shrink-0 rounded-full border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground" />
-                      <Label htmlFor="physical" className="cursor-pointer peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Física</Label>
+                      <RadioGroupItem value="physical" id="physical" />
+                      <Label htmlFor="physical" className="cursor-pointer">Pessoa Física</Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="legal" id="legal" className="peer h-4 w-4 shrink-0 rounded-full border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground" />
-                      <Label htmlFor="legal" className="cursor-pointer peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Jurídica</Label>
+                      <RadioGroupItem value="legal" id="legal" />
+                      <Label htmlFor="legal" className="cursor-pointer">Pessoa Jurídica</Label>
                     </div>
                   </RadioGroup>
-                </div>
+                </CardContent>
+              </Card>
 
-                {client.type === 'physical' ? (
-                  <>
-                    {/* Nome */}
-                    <div>
-                      <Label htmlFor="name" className="block text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                        Nome
-                      </Label>
-                      <Input 
-                        type="text" 
-                        id="name" 
-                        name="name"
-                        value={client.name || ''}
-                        onChange={handleInputChange}
-                        className="mt-1 w-full" 
-                      />
+              {client.type === 'physical' ? (
+                <Card className="shadow-sm border-gray-200">
+                  <CardContent className="pt-6">
+                    <h3 className="text-lg font-medium mb-4">Dados Pessoais</h3>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      {/* Nome */}
+                      <div>
+                        <Label htmlFor="name" className="block text-sm font-medium">
+                          Nome
+                        </Label>
+                        <Input 
+                          type="text" 
+                          id="name" 
+                          name="name"
+                          value={client.name || ''}
+                          onChange={handleInputChange}
+                          className="mt-1 w-full rounded-lg" 
+                          placeholder="Ex: João"
+                        />
+                      </div>
+                      {/* Sobrenome */}
+                      <div>
+                        <Label htmlFor="surname" className="block text-sm font-medium">
+                          Sobrenome
+                        </Label>
+                        <Input 
+                          type="text" 
+                          id="surname" 
+                          name="surname"
+                          value={client.surname || ''}
+                          onChange={handleInputChange}
+                          className="mt-1 w-full rounded-lg"
+                          placeholder="Ex: Silva"
+                        />
+                      </div>
+                      {/* CPF */}
+                      <div>
+                        <Label htmlFor="cpf" className="block text-sm font-medium">
+                          CPF
+                        </Label>
+                        <Input 
+                          type="text" 
+                          id="cpf" 
+                          name="cpf"
+                          value={client.cpf || ''}
+                          onChange={handleInputChange}
+                          className="mt-1 w-full rounded-lg" 
+                          placeholder="000.000.000-00"
+                        />
+                      </div>
+                      {/* RG */}
+                      <div>
+                        <Label htmlFor="rg" className="block text-sm font-medium">
+                          RG
+                        </Label>
+                        <Input 
+                          type="text" 
+                          id="rg"
+                          name="rg"
+                          value={client.rg || ''}
+                          onChange={handleInputChange}
+                          className="mt-1 w-full rounded-lg" 
+                          placeholder="00.000.000-0"
+                        />
+                      </div>
+                      {/* Emissor */}
+                      <div>
+                        <Label htmlFor="issuer" className="block text-sm font-medium">
+                          Emissor
+                        </Label>
+                        <Input 
+                          type="text" 
+                          id="issuer"
+                          name="issuer"
+                          value={client.issuer || ''}
+                          onChange={handleInputChange}
+                          className="mt-1 w-full rounded-lg" 
+                          placeholder="SSP"
+                        />
+                      </div>
+                      {/* UF */}
+                      <div>
+                        <Label htmlFor="uf" className="block text-sm font-medium">
+                          UF
+                        </Label>
+                        <Select onValueChange={(value) => handleSelectChange("uf", value)}>
+                          <SelectTrigger className="w-full mt-1 rounded-lg">
+                            <SelectValue placeholder="Selecione" defaultValue={client.uf || ''} />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {UF_OPTIONS.map((uf) => (
+                              <SelectItem key={uf.value} value={uf.value}>{uf.label}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      {/* Sexo */}
+                      <div>
+                        <Label htmlFor="gender" className="block text-sm font-medium">
+                          Sexo
+                        </Label>
+                        <Select onValueChange={(value) => handleSelectChange("gender", value)}>
+                          <SelectTrigger className="w-full mt-1 rounded-lg">
+                            <SelectValue placeholder="Selecione" defaultValue={client.gender || ''} />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {GENDER_OPTIONS.map((gender) => (
+                              <SelectItem key={gender.value} value={gender.value}>{gender.label}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      {/* Data de Nascimento */}
+                      <div>
+                        <Label htmlFor="birthday" className="block text-sm font-medium">
+                          Aniversário
+                        </Label>
+                        <Input 
+                          type="date" 
+                          id="birthday"
+                          name="birthday"
+                          value={client.birthday || ''}
+                          onChange={handleInputChange}
+                          className="mt-1 w-full rounded-lg" 
+                        />
+                      </div>
                     </div>
-                    {/* Sobrenome */}
-                    <div>
-                      <Label htmlFor="surname" className="block text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                        Sobrenome
-                      </Label>
-                      <Input 
-                        type="text" 
-                        id="surname" 
-                        name="surname"
-                        value={client.surname || ''}
-                        onChange={handleInputChange}
-                        className="mt-1 w-full"
-                      />
+                  </CardContent>
+                </Card>
+              ) : (
+                <Card className="shadow-sm border-gray-200">
+                  <CardContent className="pt-6">
+                    <h3 className="text-lg font-medium mb-4">Dados da Empresa</h3>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      {/* Razão Social */}
+                      <div>
+                        <Label htmlFor="companyName" className="block text-sm font-medium">
+                          Razão Social
+                        </Label>
+                        <Input 
+                          type="text" 
+                          id="companyName"
+                          name="companyName"
+                          value={client.companyName || ''}
+                          onChange={handleInputChange}
+                          className="mt-1 w-full rounded-lg" 
+                        />
+                      </div>
+                      {/* Nome Fantasia */}
+                      <div>
+                        <Label htmlFor="tradeName" className="block text-sm font-medium">
+                          Nome Fantasia
+                        </Label>
+                        <Input 
+                          type="text" 
+                          id="tradeName"
+                          name="tradeName"
+                          value={client.tradeName || ''}
+                          onChange={handleInputChange}
+                          className="mt-1 w-full rounded-lg" 
+                        />
+                      </div>
+                      {/* CNPJ */}
+                      <div>
+                        <Label htmlFor="cnpj" className="block text-sm font-medium">
+                          CNPJ
+                        </Label>
+                        <Input 
+                          type="text" 
+                          id="cnpj"
+                          name="cnpj"
+                          value={client.cnpj || ''}
+                          onChange={handleInputChange}
+                          className="mt-1 w-full rounded-lg" 
+                        />
+                      </div>
+                      {/* Indicador de IE */}
+                      <div>
+                        <Label htmlFor="ieIndicator" className="block text-sm font-medium">
+                          Indicador de IE
+                        </Label>
+                        <Select onValueChange={(value) => handleSelectChange("ieIndicator", value)}>
+                          <SelectTrigger className="w-full mt-1 rounded-lg">
+                            <SelectValue placeholder="Selecione" defaultValue={client.ieIndicator || ''} />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {IE_INDICATOR_OPTIONS.map((indicator) => (
+                              <SelectItem key={indicator.value} value={indicator.value}>{indicator.label}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      {/* Inscrição Estadual */}
+                      <div>
+                        <Label htmlFor="stateRegistration" className="block text-sm font-medium">
+                          Inscrição Estadual
+                        </Label>
+                        <Input 
+                          type="text" 
+                          id="stateRegistration"
+                          name="stateRegistration"
+                          value={client.stateRegistration || ''}
+                          onChange={handleInputChange}
+                          className="mt-1 w-full rounded-lg" 
+                        />
+                      </div>
+                      {/* Inscrição Municipal */}
+                      <div>
+                        <Label htmlFor="municipalRegistration" className="block text-sm font-medium">
+                          Inscrição Municipal
+                        </Label>
+                        <Input 
+                          type="text" 
+                          id="municipalRegistration"
+                          name="municipalRegistration"
+                          value={client.municipalRegistration || ''}
+                          onChange={handleInputChange}
+                          className="mt-1 w-full rounded-lg" 
+                        />
+                      </div>
                     </div>
-                    {/* CPF */}
-                    <div>
-                      <Label htmlFor="cpf" className="block text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                        CPF
-                      </Label>
-                      <Input 
-                        type="text" 
-                        id="cpf" 
-                        name="cpf"
-                        value={client.cpf || ''}
-                        onChange={handleInputChange}
-                        className="mt-1 w-full" 
-                      />
-                    </div>
-                    {/* RG */}
-                    <div>
-                      <Label htmlFor="rg" className="block text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                        RG
-                      </Label>
-                      <Input 
-                        type="text" 
-                        id="rg"
-                        name="rg"
-                        value={client.rg || ''}
-                        onChange={handleInputChange}
-                        className="mt-1 w-full" 
-                      />
-                    </div>
-                    {/* Orgão Expedidor */}
-                    <div>
-                      <Label htmlFor="issuer" className="block text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                        Orgão Expedidor
-                      </Label>
-                      <Input 
-                        type="text" 
-                        id="issuer"
-                        name="issuer"
-                        value={client.issuer || ''}
-                        onChange={handleInputChange}
-                        className="mt-1 w-full" 
-                      />
-                    </div>
-                    {/* UF */}
-                    <div>
-                      <Label htmlFor="uf" className="block text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                        UF
-                      </Label>
-                      <Select onValueChange={(value) => handleSelectChange("uf", value)}>
-                        <SelectTrigger className="w-full mt-1">
-                          <SelectValue placeholder="Selecione" defaultValue={client.uf || ''} />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {UF_OPTIONS.map((uf) => (
-                            <SelectItem key={uf.value} value={uf.value}>{uf.label}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    {/* Gênero */}
-                    <div>
-                      <Label htmlFor="gender" className="block text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                        Gênero
-                      </Label>
-                      <Select onValueChange={(value) => handleSelectChange("gender", value)}>
-                        <SelectTrigger className="w-full mt-1">
-                          <SelectValue placeholder="Selecione" defaultValue={client.gender || ''} />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {GENDER_OPTIONS.map((gender) => (
-                            <SelectItem key={gender.value} value={gender.value}>{gender.label}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    {/* Data de Nascimento */}
-                    <div>
-                      <Label htmlFor="birthday" className="block text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                        Data de Nascimento
-                      </Label>
-                      <Input 
-                        type="date" 
-                        id="birthday"
-                        name="birthday"
-                        value={client.birthday || ''}
-                        onChange={handleInputChange}
-                        className="mt-1 w-full" 
-                      />
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    {/* Razão Social */}
-                    <div>
-                      <Label htmlFor="companyName" className="block text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                        Razão Social
-                      </Label>
-                      <Input 
-                        type="text" 
-                        id="companyName"
-                        name="companyName"
-                        value={client.companyName || ''}
-                        onChange={handleInputChange}
-                        className="mt-1 w-full" 
-                      />
-                    </div>
-                    {/* Nome Fantasia */}
-                    <div>
-                      <Label htmlFor="tradeName" className="block text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                        Nome Fantasia
-                      </Label>
-                      <Input 
-                        type="text" 
-                        id="tradeName"
-                        name="tradeName"
-                        value={client.tradeName || ''}
-                        onChange={handleInputChange}
-                        className="mt-1 w-full" 
-                      />
-                    </div>
-                    {/* CNPJ */}
-                    <div>
-                      <Label htmlFor="cnpj" className="block text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                        CNPJ
-                      </Label>
-                      <Input 
-                        type="text" 
-                        id="cnpj"
-                        name="cnpj"
-                        value={client.cnpj || ''}
-                        onChange={handleInputChange}
-                        className="mt-1 w-full" 
-                      />
-                    </div>
-                    {/* Indicador de IE */}
-                    <div>
-                      <Label htmlFor="ieIndicator" className="block text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                        Indicador de IE
-                      </Label>
-                      <Select onValueChange={(value) => handleSelectChange("ieIndicator", value)}>
-                        <SelectTrigger className="w-full mt-1">
-                          <SelectValue placeholder="Selecione" defaultValue={client.ieIndicator || ''} />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {IE_INDICATOR_OPTIONS.map((indicator) => (
-                            <SelectItem key={indicator.value} value={indicator.value}>{indicator.label}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    {/* Inscrição Estadual */}
-                    <div>
-                      <Label htmlFor="stateRegistration" className="block text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                        Inscrição Estadual
-                      </Label>
-                      <Input 
-                        type="text" 
-                        id="stateRegistration"
-                        name="stateRegistration"
-                        value={client.stateRegistration || ''}
-                        onChange={handleInputChange}
-                        className="mt-1 w-full" 
-                      />
-                    </div>
-                    {/* Inscrição Municipal */}
-                    <div>
-                      <Label htmlFor="municipalRegistration" className="block text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                        Inscrição Municipal
-                      </Label>
-                      <Input 
-                        type="text" 
-                        id="municipalRegistration"
-                        name="municipalRegistration"
-                        value={client.municipalRegistration || ''}
-                        onChange={handleInputChange}
-                        className="mt-1 w-full" 
-                      />
-                    </div>
-                  </>
-                )}
+                  </CardContent>
+                </Card>
+              )}
 
-                {/* Telefone */}
-                <div>
-                  <Label htmlFor="phone" className="block text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                    Telefone
-                  </Label>
-                  <Input 
-                    type="text" 
-                    id="phone"
-                    name="phone"
-                    value={client.phone || ''}
-                    onChange={handleInputChange}
-                    className="mt-1 w-full" 
-                  />
-                </div>
-                {/* Celular */}
-                <div>
-                  <Label htmlFor="mobile" className="block text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                    Celular
-                  </Label>
-                  <Input 
-                    type="text" 
-                    id="mobile"
-                    name="mobile"
-                    value={client.mobile || ''}
-                    onChange={handleInputChange}
-                    className="mt-1 w-full" 
-                  />
-                </div>
-                {/* Email */}
-                <div>
-                  <Label htmlFor="email" className="block text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                    Email
-                  </Label>
-                  <Input 
-                    type="email" 
-                    id="email"
-                    name="email"
-                    value={client.email || ''}
-                    onChange={handleInputChange}
-                    className="mt-1 w-full" 
-                  />
-                </div>
-                {/* Website */}
-                <div>
-                  <Label htmlFor="website" className="block text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                    Website
-                  </Label>
-                  <Input 
-                    type="url" 
-                    id="website"
-                    name="website"
-                    value={client.website || ''}
-                    onChange={handleInputChange}
-                    className="mt-1 w-full" 
-                  />
-                </div>
-                {/* Observação */}
-                <div className="md:col-span-2">
-                  <Label htmlFor="observation" className="block text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                    Observação
-                  </Label>
-                  <Textarea 
-                    id="observation"
-                    name="observation"
-                    value={client.observation || ''}
-                    onChange={handleInputChange}
-                    className="mt-1 w-full" 
-                  />
-                </div>
-                {/* Limite de Crédito */}
-                <div>
-                  <Label htmlFor="creditLimit" className="block text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                    Limite de Crédito
-                  </Label>
-                  <div className="relative mt-1">
-                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
-                      R$
+              {/* Contato */}
+              <Card className="shadow-sm border-gray-200">
+                <CardContent className="pt-6">
+                  <h3 className="text-lg font-medium mb-4">Contato</h3>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    {/* Telefone */}
+                    <div>
+                      <Label htmlFor="phone" className="block text-sm font-medium">
+                        Telefone
+                      </Label>
+                      <Input 
+                        type="text" 
+                        id="phone"
+                        name="phone"
+                        value={client.phone || ''}
+                        onChange={handleInputChange}
+                        className="mt-1 w-full rounded-lg" 
+                        placeholder="(00) 0000-0000"
+                      />
                     </div>
-                    <Input
-                      type="number"
-                      id="creditLimit"
-                      name="creditLimit"
-                      value={client.creditLimit?.toString() || ''}
-                      onChange={handleNumberInputChange}
-                      className="w-full pl-7"
-                      onFocus={() => setIsCreditLimitFocused(true)}
-                      onBlur={() => setIsCreditLimitFocused(false)}
-                    />
+                    {/* Celular */}
+                    <div>
+                      <Label htmlFor="mobile" className="block text-sm font-medium">
+                        Celular
+                      </Label>
+                      <Input 
+                        type="text" 
+                        id="mobile"
+                        name="mobile"
+                        value={client.mobile || ''}
+                        onChange={handleInputChange}
+                        className="mt-1 w-full rounded-lg" 
+                        placeholder="(00) 00000-0000"
+                      />
+                    </div>
+                    {/* Email */}
+                    <div>
+                      <Label htmlFor="email" className="block text-sm font-medium">
+                        Email
+                      </Label>
+                      <Input 
+                        type="email" 
+                        id="email"
+                        name="email"
+                        value={client.email || ''}
+                        onChange={handleInputChange}
+                        className="mt-1 w-full rounded-lg" 
+                        placeholder="email@exemplo.com"
+                      />
+                    </div>
+                    {/* Website */}
+                    <div>
+                      <Label htmlFor="website" className="block text-sm font-medium">
+                        Site
+                      </Label>
+                      <Input 
+                        type="url" 
+                        id="website"
+                        name="website"
+                        value={client.website || ''}
+                        onChange={handleInputChange}
+                        className="mt-1 w-full rounded-lg" 
+                        placeholder="Ex: http://www.site.com.br"
+                      />
+                    </div>
+                    {/* Observação */}
+                    <div className="md:col-span-2">
+                      <Label htmlFor="observation" className="block text-sm font-medium">
+                        Observação
+                      </Label>
+                      <Textarea 
+                        id="observation"
+                        name="observation"
+                        value={client.observation || ''}
+                        onChange={handleInputChange}
+                        className="mt-1 w-full rounded-lg" 
+                        placeholder="Observações sobre o cliente..."
+                      />
+                    </div>
                   </div>
-                </div>
-                {/* Consumidor Final */}
-                <div>
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="isFinalConsumer" className="block text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                      Consumidor Final
-                    </Label>
-                    <Switch 
-                      id="isFinalConsumer"
-                      checked={client.isFinalConsumer}
-                      onCheckedChange={(checked) => handleSwitchChange("isFinalConsumer", checked)}
-                    />
+                </CardContent>
+              </Card>
+
+              {/* Configurações */}
+              <Card className="shadow-sm border-gray-200">
+                <CardContent className="pt-6">
+                  <h3 className="text-lg font-medium mb-4">Configurações</h3>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    {/* Limite de Crédito */}
+                    <div>
+                      <Label htmlFor="creditLimit" className="block text-sm font-medium">
+                        Limite de Crédito
+                      </Label>
+                      <div className="relative mt-1">
+                        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+                          R$
+                        </div>
+                        <Input
+                          type="number"
+                          id="creditLimit"
+                          name="creditLimit"
+                          value={client.creditLimit?.toString() || ''}
+                          onChange={handleNumberInputChange}
+                          className="w-full pl-7 rounded-lg"
+                          onFocus={() => setIsCreditLimitFocused(true)}
+                          onBlur={() => setIsCreditLimitFocused(false)}
+                        />
+                      </div>
+                    </div>
+                    {/* Consumidor Final */}
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="isFinalConsumer" className="block text-sm font-medium">
+                        Consumidor Final
+                      </Label>
+                      <Switch 
+                        id="isFinalConsumer"
+                        checked={client.isFinalConsumer}
+                        onCheckedChange={(checked) => handleSwitchChange("isFinalConsumer", checked)}
+                      />
+                    </div>
+                    {/* Produtor Rural */}
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="isRuralProducer" className="block text-sm font-medium">
+                        Produtor Rural
+                      </Label>
+                      <Switch 
+                        id="isRuralProducer"
+                        checked={client.isRuralProducer}
+                        onCheckedChange={(checked) => handleSwitchChange("isRuralProducer", checked)}
+                      />
+                    </div>
+                    {/* Retenção de ISS */}
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="issWithheld" className="block text-sm font-medium">
+                        Retenção de ISS
+                      </Label>
+                      <Switch 
+                        id="issWithheld"
+                        checked={client.issWithheld}
+                        onCheckedChange={(checked) => handleSwitchChange("issWithheld", checked)}
+                      />
+                    </div>
                   </div>
-                </div>
-                {/* Produtor Rural */}
-                <div>
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="isRuralProducer" className="block text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                      Produtor Rural
-                    </Label>
-                    <Switch 
-                      id="isRuralProducer"
-                      checked={client.isRuralProducer}
-                      onCheckedChange={(checked) => handleSwitchChange("isRuralProducer", checked)}
-                    />
-                  </div>
-                </div>
-                {/* Retenção de ISS */}
-                <div>
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="issWithheld" className="block text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                      Retenção de ISS
-                    </Label>
-                    <Switch 
-                      id="issWithheld"
-                      checked={client.issWithheld}
-                      onCheckedChange={(checked) => handleSwitchChange("issWithheld", checked)}
-                    />
-                  </div>
-                </div>
-                {/* Email para NFe */}
-                <div>
-                  <Label htmlFor="nfeEmail" className="block text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                    Email para NFe
-                  </Label>
-                  <Input 
-                    type="email" 
-                    id="nfeEmail"
-                    name="nfeEmail"
-                    value={client.nfeEmail || ''}
-                    onChange={handleInputChange}
-                    className="mt-1 w-full" 
-                  />
-                </div>
-              </div>
+                </CardContent>
+              </Card>
             </TabsContent>
           </Tabs>
-          
-          <div className="flex justify-end pt-4 border-t">
-            <Button
-              type="button"
-              variant="outline"
-              className="mr-2"
-              onClick={handleCancel}
-            >
+
+          <div className="flex justify-end gap-2">
+            <Button variant="outline" type="button" onClick={handleCancel}>
               Cancelar
             </Button>
-            <Button 
-              type="submit"
-              disabled={isLoading}
-              className="flex items-center gap-2 bg-black hover:bg-black/90 text-white"
-            >
-              <SaveIcon className="h-4 w-4" />
+            <Button type="submit" disabled={isLoading}>
               {isLoading ? "Salvando..." : "Salvar"}
             </Button>
           </div>
