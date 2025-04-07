@@ -1,10 +1,10 @@
 
 import { RefreshCw, Plus, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import PageHeader from '@/components/common/PageHeader';
 
-interface DashboardHeaderProps {
+export interface DashboardHeaderProps {
   isRefreshing: boolean;
   handleRefresh: () => void;
 }
@@ -35,18 +35,20 @@ const DashboardHeader = ({ isRefreshing, handleRefresh }: DashboardHeaderProps) 
         }
       />
       
-      <div className="flex items-center justify-between mb-2">
-        <TabsList className="mb-0">
-          <TabsTrigger value="overview">Visão Geral</TabsTrigger>
-          <TabsTrigger value="finance">Financeiro</TabsTrigger>
-          <TabsTrigger value="sales">Vendas</TabsTrigger>
-          <TabsTrigger value="inventory">Estoque</TabsTrigger>
-        </TabsList>
-        <Button variant="ghost" size="sm" className="flex items-center text-muted-foreground">
-          <Filter className="mr-1 h-4 w-4" />
-          Filtros
-        </Button>
-      </div>
+      <Tabs defaultValue="overview" className="w-full">
+        <div className="flex items-center justify-between mb-2">
+          <TabsList className="mb-0">
+            <TabsTrigger value="overview">Visão Geral</TabsTrigger>
+            <TabsTrigger value="finance">Financeiro</TabsTrigger>
+            <TabsTrigger value="sales">Vendas</TabsTrigger>
+            <TabsTrigger value="inventory">Estoque</TabsTrigger>
+          </TabsList>
+          <Button variant="ghost" size="sm" className="flex items-center text-muted-foreground">
+            <Filter className="mr-1 h-4 w-4" />
+            Filtros
+          </Button>
+        </div>
+      </Tabs>
     </>
   );
 };
