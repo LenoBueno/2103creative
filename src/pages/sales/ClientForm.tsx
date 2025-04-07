@@ -149,127 +149,142 @@ const ClientForm = () => {
                 <Card className="shadow-sm border-gray-200">
                   <CardContent className="pt-6">
                     <h3 className="text-lg font-medium mb-4">Dados Pessoais</h3>
-                    <div className="grid md:grid-cols-2 gap-4">
-                      {/* Nome */}
-                      <div>
-                        <Label htmlFor="name" className="block text-sm font-medium">
-                          Nome
-                        </Label>
-                        <Input 
-                          type="text" 
-                          id="name" 
-                          name="name"
-                          value={client.name || ''}
-                          onChange={handleInputChange}
-                          className="mt-1 w-full rounded-lg" 
-                          placeholder="Ex: João"
-                        />
+                    <div className="grid grid-cols-1 gap-4">
+                      {/* Nome e Sobrenome na mesma linha */}
+                      <div className="grid md:grid-cols-2 gap-4">
+                        {/* Nome */}
+                        <div>
+                          <Label htmlFor="name" className="block text-sm font-medium">
+                            Nome
+                          </Label>
+                          <Input 
+                            type="text" 
+                            id="name" 
+                            name="name"
+                            value={client.name || ''}
+                            onChange={handleInputChange}
+                            className="mt-1 w-full rounded-lg" 
+                            placeholder="Ex: João"
+                          />
+                        </div>
+                        {/* Sobrenome */}
+                        <div>
+                          <Label htmlFor="surname" className="block text-sm font-medium">
+                            Sobrenome
+                          </Label>
+                          <Input 
+                            type="text" 
+                            id="surname" 
+                            name="surname"
+                            value={client.surname || ''}
+                            onChange={handleInputChange}
+                            className="mt-1 w-full rounded-lg"
+                            placeholder="Ex: Silva"
+                          />
+                        </div>
                       </div>
-                      {/* Sobrenome */}
-                      <div>
-                        <Label htmlFor="surname" className="block text-sm font-medium">
-                          Sobrenome
-                        </Label>
-                        <Input 
-                          type="text" 
-                          id="surname" 
-                          name="surname"
-                          value={client.surname || ''}
-                          onChange={handleInputChange}
-                          className="mt-1 w-full rounded-lg"
-                          placeholder="Ex: Silva"
-                        />
+                      
+                      {/* CPF e RG na mesma linha */}
+                      <div className="grid md:grid-cols-2 gap-4">
+                        {/* CPF */}
+                        <div>
+                          <Label htmlFor="cpf" className="block text-sm font-medium">
+                            CPF
+                          </Label>
+                          <Input 
+                            type="text" 
+                            id="cpf" 
+                            name="cpf"
+                            value={client.cpf || ''}
+                            onChange={handleInputChange}
+                            className="mt-1 w-full rounded-lg" 
+                            placeholder="000.000.000-00"
+                          />
+                        </div>
+                        {/* RG */}
+                        <div>
+                          <Label htmlFor="rg" className="block text-sm font-medium">
+                            RG
+                          </Label>
+                          <Input 
+                            type="text" 
+                            id="rg"
+                            name="rg"
+                            value={client.rg || ''}
+                            onChange={handleInputChange}
+                            className="mt-1 w-full rounded-lg" 
+                            placeholder="00.000.000-0"
+                          />
+                        </div>
                       </div>
-                      {/* CPF */}
-                      <div>
-                        <Label htmlFor="cpf" className="block text-sm font-medium">
-                          CPF
-                        </Label>
-                        <Input 
-                          type="text" 
-                          id="cpf" 
-                          name="cpf"
-                          value={client.cpf || ''}
-                          onChange={handleInputChange}
-                          className="mt-1 w-full rounded-lg" 
-                          placeholder="000.000.000-00"
-                        />
+                      
+                      {/* Emissor e UF na mesma linha */}
+                      <div className="grid md:grid-cols-2 gap-4">
+                        {/* Emissor */}
+                        <div>
+                          <Label htmlFor="issuer" className="block text-sm font-medium">
+                            Emissor
+                          </Label>
+                          <Input 
+                            type="text" 
+                            id="issuer"
+                            name="issuer"
+                            value={client.issuer || ''}
+                            onChange={handleInputChange}
+                            className="mt-1 w-full rounded-lg" 
+                            placeholder="SSP"
+                          />
+                        </div>
+                        {/* UF */}
+                        <div>
+                          <Label htmlFor="uf" className="block text-sm font-medium">
+                            UF
+                          </Label>
+                          <Select onValueChange={(value) => handleSelectChange("uf", value)}>
+                            <SelectTrigger className="w-full mt-1 rounded-lg">
+                              <SelectValue placeholder="Selecione" defaultValue={client.uf || ''} />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {UF_OPTIONS.map((uf) => (
+                                <SelectItem key={uf.value} value={uf.value}>{uf.label}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
                       </div>
-                      {/* RG */}
-                      <div>
-                        <Label htmlFor="rg" className="block text-sm font-medium">
-                          RG
-                        </Label>
-                        <Input 
-                          type="text" 
-                          id="rg"
-                          name="rg"
-                          value={client.rg || ''}
-                          onChange={handleInputChange}
-                          className="mt-1 w-full rounded-lg" 
-                          placeholder="00.000.000-0"
-                        />
-                      </div>
-                      {/* Emissor */}
-                      <div>
-                        <Label htmlFor="issuer" className="block text-sm font-medium">
-                          Emissor
-                        </Label>
-                        <Input 
-                          type="text" 
-                          id="issuer"
-                          name="issuer"
-                          value={client.issuer || ''}
-                          onChange={handleInputChange}
-                          className="mt-1 w-full rounded-lg" 
-                          placeholder="SSP"
-                        />
-                      </div>
-                      {/* UF */}
-                      <div>
-                        <Label htmlFor="uf" className="block text-sm font-medium">
-                          UF
-                        </Label>
-                        <Select onValueChange={(value) => handleSelectChange("uf", value)}>
-                          <SelectTrigger className="w-full mt-1 rounded-lg">
-                            <SelectValue placeholder="Selecione" defaultValue={client.uf || ''} />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {UF_OPTIONS.map((uf) => (
-                              <SelectItem key={uf.value} value={uf.value}>{uf.label}</SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      {/* Sexo */}
-                      <div>
-                        <Label htmlFor="gender" className="block text-sm font-medium">
-                          Sexo
-                        </Label>
-                        <Select onValueChange={(value) => handleSelectChange("gender", value)}>
-                          <SelectTrigger className="w-full mt-1 rounded-lg">
-                            <SelectValue placeholder="Selecione" defaultValue={client.gender || ''} />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {GENDER_OPTIONS.map((gender) => (
-                              <SelectItem key={gender.value} value={gender.value}>{gender.label}</SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      {/* Data de Nascimento */}
-                      <div>
-                        <Label htmlFor="birthday" className="block text-sm font-medium">
-                          Aniversário
-                        </Label>
-                        <Input 
-                          type="date" 
-                          id="birthday"
-                          name="birthday"
-                          value={client.birthday || ''}
-                          onChange={handleInputChange}
-                          className="mt-1 w-full rounded-lg" 
-                        />
+                      
+                      {/* Sexo e Aniversário na mesma linha */}
+                      <div className="grid md:grid-cols-2 gap-4">
+                        {/* Sexo */}
+                        <div>
+                          <Label htmlFor="gender" className="block text-sm font-medium">
+                            Sexo
+                          </Label>
+                          <Select onValueChange={(value) => handleSelectChange("gender", value)}>
+                            <SelectTrigger className="w-full mt-1 rounded-lg">
+                              <SelectValue placeholder="Selecione" defaultValue={client.gender || ''} />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {GENDER_OPTIONS.map((gender) => (
+                                <SelectItem key={gender.value} value={gender.value}>{gender.label}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        {/* Data de Nascimento */}
+                        <div>
+                          <Label htmlFor="birthday" className="block text-sm font-medium">
+                            Aniversário
+                          </Label>
+                          <Input 
+                            type="date" 
+                            id="birthday"
+                            name="birthday"
+                            value={client.birthday || ''}
+                            onChange={handleInputChange}
+                            className="mt-1 w-full rounded-lg" 
+                          />
+                        </div>
                       </div>
                     </div>
                   </CardContent>
@@ -278,92 +293,103 @@ const ClientForm = () => {
                 <Card className="shadow-sm border-gray-200">
                   <CardContent className="pt-6">
                     <h3 className="text-lg font-medium mb-4">Dados da Empresa</h3>
-                    <div className="grid md:grid-cols-2 gap-4">
-                      {/* Razão Social */}
-                      <div>
-                        <Label htmlFor="companyName" className="block text-sm font-medium">
-                          Razão Social
-                        </Label>
-                        <Input 
-                          type="text" 
-                          id="companyName"
-                          name="companyName"
-                          value={client.companyName || ''}
-                          onChange={handleInputChange}
-                          className="mt-1 w-full rounded-lg" 
-                        />
+                    <div className="grid grid-cols-1 gap-4">
+                      {/* Razão Social e Nome Fantasia na mesma linha */}
+                      <div className="grid md:grid-cols-2 gap-4">
+                        {/* Razão Social */}
+                        <div>
+                          <Label htmlFor="companyName" className="block text-sm font-medium">
+                            Razão Social
+                          </Label>
+                          <Input 
+                            type="text" 
+                            id="companyName"
+                            name="companyName"
+                            value={client.companyName || ''}
+                            onChange={handleInputChange}
+                            className="mt-1 w-full rounded-lg" 
+                          />
+                        </div>
+                        {/* Nome Fantasia */}
+                        <div>
+                          <Label htmlFor="tradeName" className="block text-sm font-medium">
+                            Nome Fantasia
+                          </Label>
+                          <Input 
+                            type="text" 
+                            id="tradeName"
+                            name="tradeName"
+                            value={client.tradeName || ''}
+                            onChange={handleInputChange}
+                            className="mt-1 w-full rounded-lg" 
+                          />
+                        </div>
                       </div>
-                      {/* Nome Fantasia */}
-                      <div>
-                        <Label htmlFor="tradeName" className="block text-sm font-medium">
-                          Nome Fantasia
-                        </Label>
-                        <Input 
-                          type="text" 
-                          id="tradeName"
-                          name="tradeName"
-                          value={client.tradeName || ''}
-                          onChange={handleInputChange}
-                          className="mt-1 w-full rounded-lg" 
-                        />
+                      
+                      {/* CNPJ e Indicador de IE na mesma linha */}
+                      <div className="grid md:grid-cols-2 gap-4">
+                        {/* CNPJ */}
+                        <div>
+                          <Label htmlFor="cnpj" className="block text-sm font-medium">
+                            CNPJ
+                          </Label>
+                          <Input 
+                            type="text" 
+                            id="cnpj"
+                            name="cnpj"
+                            value={client.cnpj || ''}
+                            onChange={handleInputChange}
+                            className="mt-1 w-full rounded-lg" 
+                          />
+                        </div>
+                        {/* Indicador de IE */}
+                        <div>
+                          <Label htmlFor="ieIndicator" className="block text-sm font-medium">
+                            Indicador de IE
+                          </Label>
+                          <Select onValueChange={(value) => handleSelectChange("ieIndicator", value)}>
+                            <SelectTrigger className="w-full mt-1 rounded-lg">
+                              <SelectValue placeholder="Selecione" defaultValue={client.ieIndicator || ''} />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {IE_INDICATOR_OPTIONS.map((indicator) => (
+                                <SelectItem key={indicator.value} value={indicator.value}>{indicator.label}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
                       </div>
-                      {/* CNPJ */}
-                      <div>
-                        <Label htmlFor="cnpj" className="block text-sm font-medium">
-                          CNPJ
-                        </Label>
-                        <Input 
-                          type="text" 
-                          id="cnpj"
-                          name="cnpj"
-                          value={client.cnpj || ''}
-                          onChange={handleInputChange}
-                          className="mt-1 w-full rounded-lg" 
-                        />
-                      </div>
-                      {/* Indicador de IE */}
-                      <div>
-                        <Label htmlFor="ieIndicator" className="block text-sm font-medium">
-                          Indicador de IE
-                        </Label>
-                        <Select onValueChange={(value) => handleSelectChange("ieIndicator", value)}>
-                          <SelectTrigger className="w-full mt-1 rounded-lg">
-                            <SelectValue placeholder="Selecione" defaultValue={client.ieIndicator || ''} />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {IE_INDICATOR_OPTIONS.map((indicator) => (
-                              <SelectItem key={indicator.value} value={indicator.value}>{indicator.label}</SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      {/* Inscrição Estadual */}
-                      <div>
-                        <Label htmlFor="stateRegistration" className="block text-sm font-medium">
-                          Inscrição Estadual
-                        </Label>
-                        <Input 
-                          type="text" 
-                          id="stateRegistration"
-                          name="stateRegistration"
-                          value={client.stateRegistration || ''}
-                          onChange={handleInputChange}
-                          className="mt-1 w-full rounded-lg" 
-                        />
-                      </div>
-                      {/* Inscrição Municipal */}
-                      <div>
-                        <Label htmlFor="municipalRegistration" className="block text-sm font-medium">
-                          Inscrição Municipal
-                        </Label>
-                        <Input 
-                          type="text" 
-                          id="municipalRegistration"
-                          name="municipalRegistration"
-                          value={client.municipalRegistration || ''}
-                          onChange={handleInputChange}
-                          className="mt-1 w-full rounded-lg" 
-                        />
+                      
+                      {/* Inscrição Estadual e Inscrição Municipal na mesma linha */}
+                      <div className="grid md:grid-cols-2 gap-4">
+                        {/* Inscrição Estadual */}
+                        <div>
+                          <Label htmlFor="stateRegistration" className="block text-sm font-medium">
+                            Inscrição Estadual
+                          </Label>
+                          <Input 
+                            type="text" 
+                            id="stateRegistration"
+                            name="stateRegistration"
+                            value={client.stateRegistration || ''}
+                            onChange={handleInputChange}
+                            className="mt-1 w-full rounded-lg" 
+                          />
+                        </div>
+                        {/* Inscrição Municipal */}
+                        <div>
+                          <Label htmlFor="municipalRegistration" className="block text-sm font-medium">
+                            Inscrição Municipal
+                          </Label>
+                          <Input 
+                            type="text" 
+                            id="municipalRegistration"
+                            name="municipalRegistration"
+                            value={client.municipalRegistration || ''}
+                            onChange={handleInputChange}
+                            className="mt-1 w-full rounded-lg" 
+                          />
+                        </div>
                       </div>
                     </div>
                   </CardContent>
