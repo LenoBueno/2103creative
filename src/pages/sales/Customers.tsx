@@ -10,8 +10,15 @@ import {
   BarChart, FileText, Filter, Plus, Search, Users, Pen, Trash2
 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useNavigate } from 'react-router-dom';
 
 const Customers = () => {
+  const navigate = useNavigate();
+
+  const handleNewClient = () => {
+    navigate('/sales/client/new');
+  };
+
   return (
     <MainLayout>
       <div className="space-y-6">
@@ -19,7 +26,7 @@ const Customers = () => {
           title="Clientes" 
           description="Gerenciamento e análise de clientes"
           actions={
-            <Button>
+            <Button onClick={handleNewClient}>
               <Plus size={16} className="mr-2" />
               Novo Cliente
             </Button>
