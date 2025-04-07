@@ -150,9 +150,7 @@ const ClientForm = () => {
                   <CardContent className="pt-6">
                     <h3 className="text-lg font-medium mb-4">Dados Pessoais</h3>
                     <div className="grid grid-cols-1 gap-4">
-                      {/* Nome e Sobrenome na mesma linha */}
                       <div className="grid md:grid-cols-2 gap-4">
-                        {/* Nome */}
                         <div>
                           <Label htmlFor="name" className="block text-sm font-medium">
                             Nome
@@ -167,7 +165,6 @@ const ClientForm = () => {
                             placeholder="Ex: João"
                           />
                         </div>
-                        {/* Sobrenome */}
                         <div>
                           <Label htmlFor="surname" className="block text-sm font-medium">
                             Sobrenome
@@ -184,9 +181,7 @@ const ClientForm = () => {
                         </div>
                       </div>
                       
-                      {/* CPF e RG na mesma linha */}
                       <div className="grid md:grid-cols-2 gap-4">
-                        {/* CPF */}
                         <div>
                           <Label htmlFor="cpf" className="block text-sm font-medium">
                             CPF
@@ -201,7 +196,6 @@ const ClientForm = () => {
                             placeholder="000.000.000-00"
                           />
                         </div>
-                        {/* RG */}
                         <div>
                           <Label htmlFor="rg" className="block text-sm font-medium">
                             RG
@@ -218,12 +212,10 @@ const ClientForm = () => {
                         </div>
                       </div>
                       
-                      {/* Emissor e UF na mesma linha */}
                       <div className="grid md:grid-cols-2 gap-4">
-                        {/* Emissor */}
                         <div>
                           <Label htmlFor="issuer" className="block text-sm font-medium">
-                            Emissor
+                            Órgão Expedidor
                           </Label>
                           <Input 
                             type="text" 
@@ -235,7 +227,6 @@ const ClientForm = () => {
                             placeholder="SSP"
                           />
                         </div>
-                        {/* UF */}
                         <div>
                           <Label htmlFor="uf" className="block text-sm font-medium">
                             UF
@@ -253,12 +244,10 @@ const ClientForm = () => {
                         </div>
                       </div>
                       
-                      {/* Sexo e Aniversário na mesma linha */}
                       <div className="grid md:grid-cols-2 gap-4">
-                        {/* Sexo */}
                         <div>
                           <Label htmlFor="gender" className="block text-sm font-medium">
-                            Sexo
+                            Gênero
                           </Label>
                           <Select onValueChange={(value) => handleSelectChange("gender", value)}>
                             <SelectTrigger className="w-full mt-1 rounded-lg">
@@ -271,10 +260,9 @@ const ClientForm = () => {
                             </SelectContent>
                           </Select>
                         </div>
-                        {/* Data de Nascimento */}
                         <div>
                           <Label htmlFor="birthday" className="block text-sm font-medium">
-                            Aniversário
+                            Data de Nascimento
                           </Label>
                           <Input 
                             type="date" 
@@ -285,6 +273,82 @@ const ClientForm = () => {
                             className="mt-1 w-full rounded-lg" 
                           />
                         </div>
+                      </div>
+                      
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="phone" className="block text-sm font-medium">
+                            Telefone
+                          </Label>
+                          <Input 
+                            type="text" 
+                            id="phone"
+                            name="phone"
+                            value={client.phone || ''}
+                            onChange={handleInputChange}
+                            className="mt-1 w-full rounded-lg" 
+                            placeholder="(00) 0000-0000"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="mobile" className="block text-sm font-medium">
+                            Celular
+                          </Label>
+                          <Input 
+                            type="text" 
+                            id="mobile"
+                            name="mobile"
+                            value={client.mobile || ''}
+                            onChange={handleInputChange}
+                            className="mt-1 w-full rounded-lg" 
+                            placeholder="(00) 00000-0000"
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="email" className="block text-sm font-medium">
+                            Email
+                          </Label>
+                          <Input 
+                            type="email" 
+                            id="email"
+                            name="email"
+                            value={client.email || ''}
+                            onChange={handleInputChange}
+                            className="mt-1 w-full rounded-lg" 
+                            placeholder="email@exemplo.com"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="website" className="block text-sm font-medium">
+                            Website
+                          </Label>
+                          <Input 
+                            type="url" 
+                            id="website"
+                            name="website"
+                            value={client.website || ''}
+                            onChange={handleInputChange}
+                            className="mt-1 w-full rounded-lg" 
+                            placeholder="Ex: http://www.site.com.br"
+                          />
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="observation" className="block text-sm font-medium">
+                          Observação
+                        </Label>
+                        <Textarea 
+                          id="observation"
+                          name="observation"
+                          value={client.observation || ''}
+                          onChange={handleInputChange}
+                          className="mt-1 w-full rounded-lg" 
+                          placeholder="Observações sobre o cliente..."
+                        />
                       </div>
                     </div>
                   </CardContent>
