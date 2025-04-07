@@ -26,10 +26,19 @@ export const useSidebarNavigation = () => {
     
     // Check each module to see if the current route belongs to it
     modules.forEach(module => {
-      // Check main module path
-      if (pathname === module.path || pathname.startsWith(module.path + '/')) {
+      // Check if current path matches the module path or starts with it
+      if (pathname === module.path || 
+          (module.path !== '/dashboard' && pathname.startsWith(module.path + '/'))) {
         setActiveModule(module.id);
         foundActiveModule = true;
+        
+        // If this is a module with submenu, expand it
+        if (module.hasSubmenu) {
+          setExpandedMenus(prev => ({
+            ...prev,
+            [module.id]: true
+          }));
+        }
       }
       
       // Check submenus if present

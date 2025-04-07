@@ -65,28 +65,42 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/menu" element={<Index />} />
           
+          {/* Add parent routes for module sections */}
+          <Route path="/sales" element={<Navigate to="/sales/customers" replace />} />
+          <Route path="/finance" element={<Navigate to="/finance/accounting" replace />} />
+          <Route path="/inventory" element={<Navigate to="/inventory/items" replace />} />
+          <Route path="/purchases" element={<Navigate to="/purchases/suppliers" replace />} />
+          <Route path="/production" element={<Navigate to="/production/orders" replace />} />
+          <Route path="/analytics" element={<Navigate to="/analytics/dashboards" replace />} />
+          
+          {/* Analytics routes */}
           <Route path="/analytics/dashboards" element={<Dashboards />} />
           <Route path="/analytics/reports" element={<Reports />} />
           <Route path="/analytics/kpis" element={<KPIs />} />
           
+          {/* Inventory routes */}
           <Route path="/inventory/items" element={<Items />} />
           <Route path="/inventory/warehouses" element={<Warehouses />} />
           <Route path="/inventory/transfers" element={<Transfers />} />
           
+          {/* Finance routes */}
           <Route path="/finance/accounting" element={<Accounting />} />
           <Route path="/finance/treasury" element={<Treasury />} />
           <Route path="/finance/taxes" element={<Taxes />} />
           <Route path="/finance/reports" element={<FinanceReports />} />
           
+          {/* Sales routes */}
           <Route path="/sales/customers" element={<Customers />} />
           <Route path="/sales/orders" element={<Orders />} />
           <Route path="/sales/campaigns" element={<Campaigns />} />
           <Route path="/sales/pricing" element={<Pricing />} />
           
+          {/* Purchases routes */}
           <Route path="/purchases/suppliers" element={<Suppliers />} />
           <Route path="/purchases/orders" element={<PurchaseOrders />} />
           <Route path="/purchases/quotations" element={<Quotations />} />
           
+          {/* Production routes */}
           <Route path="/production/orders" element={<ProductionOrders />} />
           <Route path="/production/planning" element={<Planning />} />
           <Route path="/production/resources" element={<Resources />} />

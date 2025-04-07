@@ -1,6 +1,5 @@
 
 import { ReactNode, MouseEvent } from 'react';
-import { Link } from 'react-router-dom';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -11,7 +10,7 @@ export interface SidebarItemProps {
   path: string;
   expanded?: boolean;
   hasSubmenu?: boolean;
-  onToggleSubmenu?: (e: MouseEvent) => void;  // Updated type to be generic MouseEvent
+  onToggleSubmenu?: (e: MouseEvent) => void;
   onClick?: () => void;
   collapsed?: boolean;
 }
