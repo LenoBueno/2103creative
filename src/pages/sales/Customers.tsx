@@ -1,3 +1,4 @@
+
 import MainLayout from '@/components/layout/MainLayout';
 import PageHeader from '@/components/common/PageHeader';
 import { Button } from '@/components/ui/button';
@@ -6,7 +7,7 @@ import {
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { 
-  BarChart, FileText, Filter, Plus, Search, Users 
+  BarChart, FileText, Filter, Plus, Search, Users, Pen, Trash2
 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
@@ -71,6 +72,7 @@ const Customers = () => {
                         <TableHead>Cidade/UF</TableHead>
                         <TableHead>Score</TableHead>
                         <TableHead className="text-right">Valor Total</TableHead>
+                        <TableHead className="w-[100px]">Ações</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -96,6 +98,16 @@ const Customers = () => {
                           </div>
                         </TableCell>
                         <TableCell className="text-right">R$ 156.430,00</TableCell>
+                        <TableCell>
+                          <div className="flex items-center justify-center space-x-2">
+                            <Button variant="ghost" size="icon" className="h-8 w-8">
+                              <Pen className="h-4 w-4 text-gray-700" />
+                            </Button>
+                            <Button variant="ghost" size="icon" className="h-8 w-8">
+                              <Trash2 className="h-4 w-4 text-red-500" />
+                            </Button>
+                          </div>
+                        </TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell>C-0002</TableCell>
@@ -119,6 +131,16 @@ const Customers = () => {
                           </div>
                         </TableCell>
                         <TableCell className="text-right">R$ 78.950,00</TableCell>
+                        <TableCell>
+                          <div className="flex items-center justify-center space-x-2">
+                            <Button variant="ghost" size="icon" className="h-8 w-8">
+                              <Pen className="h-4 w-4 text-gray-700" />
+                            </Button>
+                            <Button variant="ghost" size="icon" className="h-8 w-8">
+                              <Trash2 className="h-4 w-4 text-red-500" />
+                            </Button>
+                          </div>
+                        </TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell>C-0003</TableCell>
@@ -142,6 +164,16 @@ const Customers = () => {
                           </div>
                         </TableCell>
                         <TableCell className="text-right">R$ 45.780,00</TableCell>
+                        <TableCell>
+                          <div className="flex items-center justify-center space-x-2">
+                            <Button variant="ghost" size="icon" className="h-8 w-8">
+                              <Pen className="h-4 w-4 text-gray-700" />
+                            </Button>
+                            <Button variant="ghost" size="icon" className="h-8 w-8">
+                              <Trash2 className="h-4 w-4 text-red-500" />
+                            </Button>
+                          </div>
+                        </TableCell>
                       </TableRow>
                       {/* Mais linhas seriam adicionadas aqui */}
                     </TableBody>
