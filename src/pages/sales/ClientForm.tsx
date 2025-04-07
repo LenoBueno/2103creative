@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { 
@@ -21,8 +20,6 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { SaveIcon, PlusIcon, Trash2, Paperclip } from "lucide-react";
-import MainLayout from "@/components/layout/MainLayout";
-import PageHeader from "@/components/common/PageHeader";
 import {
   Client,
   GENDER_OPTIONS,
@@ -31,6 +28,8 @@ import {
   DOCUMENT_TYPE_OPTIONS,
   BANK_OPTIONS
 } from "@/types/client";
+import MainLayout from "@/components/layout/MainLayout";
+import PageHeader from "@/components/common/PageHeader";
 
 const ClientForm = () => {
   const { id } = useParams();
@@ -94,35 +93,34 @@ const ClientForm = () => {
   };
 
   const handleCancel = () => {
-    navigate("/sales/Customers");
+    navigate("/sales/customers");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Implementar lógica de salvar
-    navigate("/sales/Customers");
+    navigate("/sales/customers");
   };
 
   return (
     <MainLayout>
       <div className="p-6 max-w-7xl mx-auto">
-        <PageHeader 
+        <PageHeader
           title={id ? "Editar Cliente" : "Novo Cliente"}
           description="Gerenciamento de informações do cliente"
+          actions={
+            <div className="flex items-center gap-2">
+              <Label htmlFor="isActive" className="cursor-pointer">
+                {client.isActive ? "Ativo" : "Inativo"}
+              </Label>
+              <Switch 
+                id="isActive"
+                checked={client.isActive}
+                onCheckedChange={(checked) => handleSwitchChange("isActive", checked)}
+              />
+            </div>
+          }
         />
-
-        <div className="flex justify-between items-center mb-6">
-          <div className="flex items-center gap-2">
-            <Label htmlFor="isActive" className="cursor-pointer">
-              {client.isActive ? "Ativo" : "Inativo"}
-            </Label>
-            <Switch 
-              id="isActive"
-              checked={client.isActive}
-              onCheckedChange={(checked) => handleSwitchChange("isActive", checked)}
-            />
-          </div>
-        </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <Tabs defaultValue="personal">
@@ -426,7 +424,7 @@ const ClientForm = () => {
                   </div>
                 </div>
                 
-                {/* Dados Fiscais */}
+                
                 <div className="mt-6 pt-6 border-t space-y-4">
                   <h3 className="text-lg font-medium">Dados Fiscais</h3>
                   
@@ -443,59 +441,83 @@ const ClientForm = () => {
                   </div>
 
                   <div className="border-t mt-4 pt-4">
-                    <div className="flex flex-wrap items-center space-x-4 space-y-2 md:space-y-0">
+                    <div className="flex items-center space-x-8">
                       <div className="flex items-center">
                         <span className="mr-2">ISS retido na fonte?</span>
                         <div className="flex items-center gap-4">
-                          <div className="flex items-center space-x-2">
-                            <RadioGroupItem id="issWithheldSim" value="true" checked={client.issWithheld} 
-                              onClick={() => handleSwitchChange("issWithheld", true)} />
-                            <Label htmlFor="issWithheldSim">Sim</Label>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <RadioGroupItem id="issWithheldNao" value="false" checked={!client.issWithheld} 
-                              onClick={() => handleSwitchChange("issWithheld", false)} />
-                            <Label htmlFor="issWithheldNao">Não</Label>
-                          </div>
+                          <input
+                            type="radio"
+                            id="issWithheldSim"
+                            name="issWithheld"
+                            className="h-4 w-4"
+                            checked={client.issWithheld}
+                            onChange={() => handleSwitchChange("issWithheld", true)}
+                          />
+                          <Label htmlFor="issWithheldSim" className="mr-4">Sim</Label>
+                          <input
+                            type="radio"
+                            id="issWithheldNao"
+                            name="issWithheld"
+                            className="h-4 w-4"
+                            checked={!client.issWithheld}
+                            onChange={() => handleSwitchChange("issWithheld", false)}
+                          />
+                          <Label htmlFor="issWithheldNao">Não</Label>
                         </div>
                       </div>
                       
                       <div className="flex items-center">
                         <span className="mr-2">Consumidor final?</span>
                         <div className="flex items-center gap-4">
-                          <div className="flex items-center space-x-2">
-                            <RadioGroupItem id="isFinalConsumerSim" value="true" checked={client.isFinalConsumer} 
-                              onClick={() => handleSwitchChange("isFinalConsumer", true)} />
-                            <Label htmlFor="isFinalConsumerSim">Sim</Label>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <RadioGroupItem id="isFinalConsumerNao" value="false" checked={!client.isFinalConsumer} 
-                              onClick={() => handleSwitchChange("isFinalConsumer", false)} />
-                            <Label htmlFor="isFinalConsumerNao">Não</Label>
-                          </div>
+                          <input
+                            type="radio"
+                            id="isFinalConsumerSim"
+                            name="isFinalConsumer"
+                            className="h-4 w-4"
+                            checked={client.isFinalConsumer}
+                            onChange={() => handleSwitchChange("isFinalConsumer", true)}
+                          />
+                          <Label htmlFor="isFinalConsumerSim" className="mr-4">Sim</Label>
+                          <input
+                            type="radio"
+                            id="isFinalConsumerNao"
+                            name="isFinalConsumer"
+                            className="h-4 w-4"
+                            checked={!client.isFinalConsumer}
+                            onChange={() => handleSwitchChange("isFinalConsumer", false)}
+                          />
+                          <Label htmlFor="isFinalConsumerNao">Não</Label>
                         </div>
                       </div>
                       
                       <div className="flex items-center">
                         <span className="mr-2">Produtor rural?</span>
                         <div className="flex items-center gap-4">
-                          <div className="flex items-center space-x-2">
-                            <RadioGroupItem id="isRuralProducerSim" value="true" checked={client.isRuralProducer} 
-                              onClick={() => handleSwitchChange("isRuralProducer", true)} />
-                            <Label htmlFor="isRuralProducerSim">Sim</Label>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <RadioGroupItem id="isRuralProducerNao" value="false" checked={!client.isRuralProducer} 
-                              onClick={() => handleSwitchChange("isRuralProducer", false)} />
-                            <Label htmlFor="isRuralProducerNao">Não</Label>
-                          </div>
+                          <input
+                            type="radio"
+                            id="isRuralProducerSim"
+                            name="isRuralProducer"
+                            className="h-4 w-4"
+                            checked={client.isRuralProducer}
+                            onChange={() => handleSwitchChange("isRuralProducer", true)}
+                          />
+                          <Label htmlFor="isRuralProducerSim" className="mr-4">Sim</Label>
+                          <input
+                            type="radio"
+                            id="isRuralProducerNao"
+                            name="isRuralProducer"
+                            className="h-4 w-4"
+                            checked={!client.isRuralProducer}
+                            onChange={() => handleSwitchChange("isRuralProducer", false)}
+                          />
+                          <Label htmlFor="isRuralProducerNao">Não</Label>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* CARACTERÍSTICAS */}
+                
                 <div className="mt-6 pt-6 border-t space-y-4">
                   <h3 className="text-lg font-medium">CARACTERÍSTICAS</h3>
                   
@@ -503,7 +525,6 @@ const ClientForm = () => {
                   <div className="border-b mb-6">
                     <div className="flex overflow-x-auto">
                       <button 
-                        type="button"
                         onClick={() => {
                           document.getElementById('enderecos-content')?.classList.remove('hidden');
                           document.getElementById('contatos-content')?.classList.add('hidden');
@@ -517,7 +538,6 @@ const ClientForm = () => {
                         ENDEREÇOS
                       </button>
                       <button 
-                        type="button"
                         onClick={() => {
                           document.getElementById('enderecos-content')?.classList.add('hidden');
                           document.getElementById('contatos-content')?.classList.remove('hidden');
@@ -531,7 +551,6 @@ const ClientForm = () => {
                         CONTATOS
                       </button>
                       <button 
-                        type="button"
                         onClick={() => {
                           document.getElementById('enderecos-content')?.classList.add('hidden');
                           document.getElementById('contatos-content')?.classList.add('hidden');
@@ -545,7 +564,6 @@ const ClientForm = () => {
                         DADOS BANCÁRIOS
                       </button>
                       <button 
-                        type="button"
                         onClick={() => {
                           document.getElementById('enderecos-content')?.classList.add('hidden');
                           document.getElementById('contatos-content')?.classList.add('hidden');
@@ -559,7 +577,6 @@ const ClientForm = () => {
                         DOCUMENTOS
                       </button>
                       <button 
-                        type="button"
                         onClick={() => {
                           document.getElementById('enderecos-content')?.classList.add('hidden');
                           document.getElementById('contatos-content')?.classList.add('hidden');
@@ -573,7 +590,6 @@ const ClientForm = () => {
                         CRÉDITO
                       </button>
                       <button 
-                        type="button"
                         onClick={() => {
                           document.getElementById('enderecos-content')?.classList.add('hidden');
                           document.getElementById('contatos-content')?.classList.add('hidden');
@@ -589,23 +605,24 @@ const ClientForm = () => {
                     </div>
                   </div>
                   
+                  
                   {/* Endereços */}
                   <div id="enderecos-content" className="mb-6">
                     <div className="grid grid-cols-12 gap-2 mb-2">
-                      <div className="col-span-12 md:col-span-2">
+                      <div className="col-span-2">
                         <div className="flex items-center">
                           <Label>CEP</Label>
                           <div className="ml-1 w-4 h-4 rounded-full bg-gray-500 text-white flex items-center justify-center text-xs">?</div>
                         </div>
                         <div className="flex">
                           <Input placeholder="00000-000" className="rounded-r-none" />
-                          <Button type="button" className="rounded-l-none bg-gray-300 hover:bg-gray-400 px-2">
+                          <Button className="rounded-l-none bg-gray-300 hover:bg-gray-400 px-2">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-search"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
                           </Button>
                         </div>
                       </div>
                       
-                      <div className="col-span-12 md:col-span-5">
+                      <div className="col-span-5">
                         <div className="flex justify-between">
                           <Label>Endereço</Label>
                           <div className="flex items-center gap-1">
@@ -616,23 +633,23 @@ const ClientForm = () => {
                         <Input placeholder="Rua, Avenida, etc" />
                       </div>
                       
-                      <div className="col-span-4 md:col-span-1">
+                      <div className="col-span-1">
                         <Label>Nº</Label>
                         <Input placeholder="123" />
                       </div>
                       
-                      <div className="col-span-8 md:col-span-2">
+                      <div className="col-span-2">
                         <Label>Complemento</Label>
                         <Input placeholder="Apto, Bloco, etc" />
                       </div>
                       
-                      <div className="col-span-12 md:col-span-2">
+                      <div className="col-span-2">
                         <Label>Bairro</Label>
                         <Input placeholder="Bairro" />
                       </div>
                       
                       <div className="col-span-12 flex justify-end">
-                        <Button type="button" className="bg-teal-600 hover:bg-teal-700 text-white">OK</Button>
+                        <Button className="bg-teal-600 hover:bg-teal-700 text-white">OK</Button>
                       </div>
                     </div>
                     
@@ -649,6 +666,7 @@ const ClientForm = () => {
                         variant="outline"
                         size="sm"
                         className="flex items-center gap-1 bg-black hover:bg-black/90 text-white ml-auto"
+                        onClick={() => {/* Adicionar contato */}}
                       >
                         <PlusIcon className="h-4 w-4" /> Adicionar Contato
                       </Button>
@@ -689,13 +707,14 @@ const ClientForm = () => {
                         variant="outline"
                         size="sm"
                         className="flex items-center gap-1 bg-black hover:bg-black/90 text-white ml-auto"
+                        onClick={() => {/* Adicionar conta */}}
                       >
                         <PlusIcon className="h-4 w-4" /> Adicionar Conta
                       </Button>
                     </div>
                     
                     <div className="grid grid-cols-12 gap-4 mb-4">
-                      <div className="col-span-12 md:col-span-4 space-y-2">
+                      <div className="col-span-4 space-y-2">
                         <Label>Banco</Label>
                         <Select>
                           <SelectTrigger>
@@ -709,22 +728,22 @@ const ClientForm = () => {
                         </Select>
                       </div>
                       
-                      <div className="col-span-8 md:col-span-3 space-y-2">
+                      <div className="col-span-3 space-y-2">
                         <Label>Agência</Label>
                         <Input placeholder="Agência" />
                       </div>
                       
-                      <div className="col-span-4 md:col-span-1 space-y-2">
+                      <div className="col-span-1 space-y-2">
                         <Label>Dígito</Label>
                         <Input placeholder="X" />
                       </div>
                       
-                      <div className="col-span-8 md:col-span-3 space-y-2">
+                      <div className="col-span-3 space-y-2">
                         <Label>Conta</Label>
                         <Input placeholder="Conta" />
                       </div>
                       
-                      <div className="col-span-4 md:col-span-1 space-y-2">
+                      <div className="col-span-1 space-y-2">
                         <Label>Dígito</Label>
                         <Input placeholder="X" />
                       </div>
@@ -743,6 +762,7 @@ const ClientForm = () => {
                         variant="outline"
                         size="sm"
                         className="flex items-center gap-1 bg-black hover:bg-black/90 text-white ml-auto"
+                        onClick={() => {/* Adicionar documento */}}
                       >
                         <PlusIcon className="h-4 w-4" /> Adicionar Documento
                       </Button>
@@ -756,9 +776,11 @@ const ClientForm = () => {
                             <SelectValue placeholder="Selecione um tipo" />
                           </SelectTrigger>
                           <SelectContent>
-                            {DOCUMENT_TYPE_OPTIONS.map(type => (
-                              <SelectItem key={type.value} value={type.value}>{type.label}</SelectItem>
-                            ))}
+                            <SelectItem value="cenae">CENAE</SelectItem>
+                            <SelectItem value="ie">Inscrição Estadual</SelectItem>
+                            <SelectItem value="iest">Inscrição Estadual ST</SelectItem>
+                            <SelectItem value="im">Inscrição Municipal</SelectItem>
+                            <SelectItem value="suframa">SUFRAMA</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
@@ -767,7 +789,7 @@ const ClientForm = () => {
                         <Label>Documento</Label>
                         <div className="flex gap-2">
                           <Input placeholder="Selecione um arquivo" readOnly className="flex-1" />
-                          <Button type="button" variant="outline" size="icon" className="flex-shrink-0">
+                          <Button variant="outline" size="icon" className="flex-shrink-0">
                             <Paperclip className="h-4 w-4" />
                           </Button>
                         </div>
@@ -836,78 +858,3 @@ const ClientForm = () => {
                           <div className="font-medium">R$ {(client.creditLimit || 0).toFixed(2)}</div>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                  
-                  {/* Histórico */}
-                  <div id="historico-content" className="mb-6 hidden">
-                    <div className="flex justify-between items-center mb-4">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        className="flex items-center gap-1 bg-black hover:bg-black/90 text-white ml-auto"
-                      >
-                        <PlusIcon className="h-4 w-4" /> Adicionar Histórico
-                      </Button>
-                    </div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                      <div className="space-y-2">
-                        <Label>Data</Label>
-                        <Input type="date" />
-                      </div>
-                      
-                      <div className="md:col-span-2 space-y-2">
-                        <Label>Descrição</Label>
-                        <Textarea placeholder="Descrição" rows={2} />
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <Label>Status</Label>
-                        <Select>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Selecione um status" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="pending">Pendente</SelectItem>
-                            <SelectItem value="completed">Concluído</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-                    
-                    <div className="text-center py-4 text-orange-600 font-medium">
-                      NENHUM HISTÓRICO INFORMADO PARA ESTE CLIENTE ATÉ O MOMENTO!
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </TabsContent>
-          </Tabs>
-          
-          <div className="flex justify-end pt-4 border-t">
-            <Button
-              type="button"
-              variant="outline"
-              className="mr-2"
-              onClick={handleCancel}
-            >
-              Cancelar
-            </Button>
-            <Button 
-              type="submit"
-              disabled={isLoading}
-              className="flex items-center gap-2 bg-black hover:bg-black/90 text-white"
-            >
-              <SaveIcon className="h-4 w-4" />
-              {isLoading ? "Salvando..." : "Salvar"}
-            </Button>
-          </div>
-        </form>
-      </div>
-    </MainLayout>
-  );
-};
-
-export default ClientForm;

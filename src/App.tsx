@@ -26,6 +26,7 @@ import FinanceReports from "@/pages/finance/Reports";
 
 // Sales
 import Customers from "@/pages/sales/Customers";
+import ClientForm from "@/pages/sales/ClientForm";
 import Orders from "@/pages/sales/Orders";
 import Campaigns from "@/pages/sales/Campaigns";
 import Pricing from "@/pages/sales/Pricing";
@@ -91,6 +92,8 @@ function App() {
           
           {/* Sales routes */}
           <Route path="/sales/customers" element={<Customers />} />
+          <Route path="/sales/client/new" element={<ClientForm />} />
+          <Route path="/sales/client/:id" element={<ClientForm />} />
           <Route path="/sales/orders" element={<Orders />} />
           <Route path="/sales/campaigns" element={<Campaigns />} />
           <Route path="/sales/pricing" element={<Pricing />} />
