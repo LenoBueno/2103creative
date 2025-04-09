@@ -19,7 +19,7 @@ const Sidebar = () => {
         )}
       >
         <SidebarHeader />
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-700">
           <SidebarContent />
         </div>
         <SidebarFooter />

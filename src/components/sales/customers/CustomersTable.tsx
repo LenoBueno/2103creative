@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { 
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow 
@@ -7,6 +8,11 @@ import {
 import { Pen, Trash2 } from 'lucide-react';
 
 const CustomersTable = () => {
+  const navigate = useNavigate();
+  
+  const handleEdit = (id: string) => {
+    navigate(`/sales/client/${id}`);
+  };
   return (
     <div className="border rounded-md">
       <Table>
@@ -46,7 +52,12 @@ const CustomersTable = () => {
             <TableCell className="text-right">R$ 156.430,00</TableCell>
             <TableCell>
               <div className="flex items-center justify-center space-x-2">
-                <Button variant="ghost" size="icon" className="h-8 w-8">
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="h-8 w-8"
+                  onClick={() => handleEdit('C-0001')}
+                >
                   <Pen className="h-4 w-4 text-gray-700" />
                 </Button>
                 <Button variant="ghost" size="icon" className="h-8 w-8">
@@ -79,7 +90,12 @@ const CustomersTable = () => {
             <TableCell className="text-right">R$ 78.950,00</TableCell>
             <TableCell>
               <div className="flex items-center justify-center space-x-2">
-                <Button variant="ghost" size="icon" className="h-8 w-8">
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="h-8 w-8"
+                  onClick={() => handleEdit('C-0002')}
+                >
                   <Pen className="h-4 w-4 text-gray-700" />
                 </Button>
                 <Button variant="ghost" size="icon" className="h-8 w-8">
@@ -112,7 +128,12 @@ const CustomersTable = () => {
             <TableCell className="text-right">R$ 45.780,00</TableCell>
             <TableCell>
               <div className="flex items-center justify-center space-x-2">
-                <Button variant="ghost" size="icon" className="h-8 w-8">
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="h-8 w-8"
+                  onClick={() => handleEdit('C-0003')}
+                >
                   <Pen className="h-4 w-4 text-gray-700" />
                 </Button>
                 <Button variant="ghost" size="icon" className="h-8 w-8">

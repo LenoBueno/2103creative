@@ -13,7 +13,7 @@ const SidebarContent = () => {
   const { activeModule, expandedMenus, toggleSubmenu, handleModuleClick } = useSidebarNavigation();
 
   return (
-    <div className="py-2 space-y-1 flex-grow overflow-y-auto transition-all duration-300">
+    <div className="py-2 space-y-1 transition-all duration-300">
       {modules.map((module) => (
         <div key={module.id} className="transition-all duration-300">
           <SidebarItem 

@@ -350,6 +350,85 @@ const ClientForm = () => {
                           placeholder="Observações sobre o cliente..."
                         />
                       </div>
+                      
+                      {/* Campos de contato - Telefone e Celular */}
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="phone" className="block text-sm font-medium">
+                            Telefone
+                          </Label>
+                          <Input 
+                            type="text" 
+                            id="phone"
+                            name="phone"
+                            value={client.phone || ''}
+                            onChange={handleInputChange}
+                            className="mt-1 w-full rounded-lg" 
+                            placeholder="(00) 0000-0000"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="mobile" className="block text-sm font-medium">
+                            Celular
+                          </Label>
+                          <Input 
+                            type="text" 
+                            id="mobile"
+                            name="mobile"
+                            value={client.mobile || ''}
+                            onChange={handleInputChange}
+                            className="mt-1 w-full rounded-lg" 
+                            placeholder="(00) 00000-0000"
+                          />
+                        </div>
+                      </div>
+                      
+                      {/* Campos de contato - Email e Website */}
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="email" className="block text-sm font-medium">
+                            Email
+                          </Label>
+                          <Input 
+                            type="email" 
+                            id="email"
+                            name="email"
+                            value={client.email || ''}
+                            onChange={handleInputChange}
+                            className="mt-1 w-full rounded-lg" 
+                            placeholder="email@exemplo.com"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="website" className="block text-sm font-medium">
+                            Website
+                          </Label>
+                          <Input 
+                            type="url" 
+                            id="website"
+                            name="website"
+                            value={client.website || ''}
+                            onChange={handleInputChange}
+                            className="mt-1 w-full rounded-lg" 
+                            placeholder="Ex: http://www.site.com.br"
+                          />
+                        </div>
+                      </div>
+                      
+                      {/* Campo de observação */}
+                      <div>
+                        <Label htmlFor="observation" className="block text-sm font-medium">
+                          Observação
+                        </Label>
+                        <Textarea 
+                          id="observation"
+                          name="observation"
+                          value={client.observation || ''}
+                          onChange={handleInputChange}
+                          className="mt-1 w-full rounded-lg" 
+                          placeholder="Observações sobre o cliente..."
+                        />
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -455,74 +534,288 @@ const ClientForm = () => {
                           />
                         </div>
                       </div>
+                      
+                      {/* Campos de contato - Telefone e Celular */}
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="phone" className="block text-sm font-medium">
+                            Telefone
+                          </Label>
+                          <Input 
+                            type="text" 
+                            id="phone"
+                            name="phone"
+                            value={client.phone || ''}
+                            onChange={handleInputChange}
+                            className="mt-1 w-full rounded-lg" 
+                            placeholder="(00) 0000-0000"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="mobile" className="block text-sm font-medium">
+                            Celular
+                          </Label>
+                          <Input 
+                            type="text" 
+                            id="mobile"
+                            name="mobile"
+                            value={client.mobile || ''}
+                            onChange={handleInputChange}
+                            className="mt-1 w-full rounded-lg" 
+                            placeholder="(00) 00000-0000"
+                          />
+                        </div>
+                      </div>
+                      
+                      {/* Campos de contato - Email e Website */}
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="email" className="block text-sm font-medium">
+                            Email
+                          </Label>
+                          <Input 
+                            type="email" 
+                            id="email"
+                            name="email"
+                            value={client.email || ''}
+                            onChange={handleInputChange}
+                            className="mt-1 w-full rounded-lg" 
+                            placeholder="email@exemplo.com"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="website" className="block text-sm font-medium">
+                            Website
+                          </Label>
+                          <Input 
+                            type="url" 
+                            id="website"
+                            name="website"
+                            value={client.website || ''}
+                            onChange={handleInputChange}
+                            className="mt-1 w-full rounded-lg" 
+                            placeholder="Ex: http://www.site.com.br"
+                          />
+                        </div>
+                      </div>
+                      
+                      {/* Campo de observação */}
+                      <div>
+                        <Label htmlFor="observation" className="block text-sm font-medium">
+                          Observação
+                        </Label>
+                        <Textarea 
+                          id="observation"
+                          name="observation"
+                          value={client.observation || ''}
+                          onChange={handleInputChange}
+                          className="mt-1 w-full rounded-lg" 
+                          placeholder="Observações sobre o cliente..."
+                        />
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
               )}
 
-              {/* Contato */}
+              {/* Endereço Principal */}
               <Card className="shadow-sm border-gray-200">
                 <CardContent className="pt-6">
-                  <h3 className="text-lg font-medium mb-4">Contato</h3>
+                  <h3 className="text-lg font-medium mb-4">Endereço Principal</h3>
                   <div className="grid md:grid-cols-2 gap-4">
-                    {/* Telefone */}
+                    {/* CEP */}
                     <div>
-                      <Label htmlFor="phone" className="block text-sm font-medium">
-                        Telefone
+                      <Label htmlFor="mainCep" className="block text-sm font-medium">
+                        CEP
                       </Label>
                       <Input 
                         type="text" 
-                        id="phone"
-                        name="phone"
-                        value={client.phone || ''}
-                        onChange={handleInputChange}
+                        id="mainCep"
+                        name="mainCep"
                         className="mt-1 w-full rounded-lg" 
-                        placeholder="(00) 0000-0000"
+                        placeholder="00000-000"
                       />
                     </div>
-                    {/* Celular */}
-                    <div>
-                      <Label htmlFor="mobile" className="block text-sm font-medium">
-                        Celular
+                    {/* Endereço */}
+                    <div className="md:col-span-2">
+                      <Label htmlFor="mainAddress" className="block text-sm font-medium">
+                        Endereço
                       </Label>
                       <Input 
                         type="text" 
-                        id="mobile"
-                        name="mobile"
-                        value={client.mobile || ''}
-                        onChange={handleInputChange}
+                        id="mainAddress"
+                        name="mainAddress"
                         className="mt-1 w-full rounded-lg" 
-                        placeholder="(00) 00000-0000"
+                        placeholder="Rua, Avenida, etc."
                       />
                     </div>
-                    {/* Email */}
+                    {/* Bairro */}
                     <div>
-                      <Label htmlFor="email" className="block text-sm font-medium">
-                        Email
+                      <Label htmlFor="mainNeighborhood" className="block text-sm font-medium">
+                        Bairro
                       </Label>
                       <Input 
-                        type="email" 
-                        id="email"
-                        name="email"
-                        value={client.email || ''}
-                        onChange={handleInputChange}
+                        type="text" 
+                        id="mainNeighborhood"
+                        name="mainNeighborhood"
                         className="mt-1 w-full rounded-lg" 
-                        placeholder="email@exemplo.com"
                       />
                     </div>
-                    {/* Website */}
+                    {/* Número */}
                     <div>
-                      <Label htmlFor="website" className="block text-sm font-medium">
-                        Site
+                      <Label htmlFor="mainNumber" className="block text-sm font-medium">
+                        Número
                       </Label>
                       <Input 
-                        type="url" 
-                        id="website"
-                        name="website"
-                        value={client.website || ''}
-                        onChange={handleInputChange}
+                        type="text" 
+                        id="mainNumber"
+                        name="mainNumber"
                         className="mt-1 w-full rounded-lg" 
-                        placeholder="Ex: http://www.site.com.br"
+                      />
+                    </div>
+                    {/* Complemento */}
+                    <div className="md:col-span-2">
+                      <Label htmlFor="mainComplement" className="block text-sm font-medium">
+                        Complemento
+                      </Label>
+                      <Input 
+                        type="text" 
+                        id="mainComplement"
+                        name="mainComplement"
+                        className="mt-1 w-full rounded-lg" 
+                        placeholder="Apto, Bloco, etc."
+                      />
+                    </div>
+                    {/* Estado */}
+                    <div>
+                      <Label htmlFor="mainState" className="block text-sm font-medium">
+                        Estado
+                      </Label>
+                      <Select onValueChange={(value) => handleSelectChange("mainState", value)}>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Selecione" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {UF_OPTIONS.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    {/* Cidade */}
+                    <div>
+                      <Label htmlFor="mainCity" className="block text-sm font-medium">
+                        Cidade
+                      </Label>
+                      <Input 
+                        type="text" 
+                        id="mainCity"
+                        name="mainCity"
+                        className="mt-1 w-full rounded-lg" 
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Endereço Secundário */}
+              <Card className="shadow-sm border-gray-200">
+                <CardContent className="pt-6">
+                  <h3 className="text-lg font-medium mb-4">Endereço Secundário</h3>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    {/* CEP */}
+                    <div>
+                      <Label htmlFor="secondaryCep" className="block text-sm font-medium">
+                        CEP
+                      </Label>
+                      <Input 
+                        type="text" 
+                        id="secondaryCep"
+                        name="secondaryCep"
+                        className="mt-1 w-full rounded-lg" 
+                        placeholder="00000-000"
+                      />
+                    </div>
+                    {/* Endereço */}
+                    <div className="md:col-span-2">
+                      <Label htmlFor="secondaryAddress" className="block text-sm font-medium">
+                        Endereço
+                      </Label>
+                      <Input 
+                        type="text" 
+                        id="secondaryAddress"
+                        name="secondaryAddress"
+                        className="mt-1 w-full rounded-lg" 
+                        placeholder="Rua, Avenida, etc."
+                      />
+                    </div>
+                    {/* Bairro */}
+                    <div>
+                      <Label htmlFor="secondaryNeighborhood" className="block text-sm font-medium">
+                        Bairro
+                      </Label>
+                      <Input 
+                        type="text" 
+                        id="secondaryNeighborhood"
+                        name="secondaryNeighborhood"
+                        className="mt-1 w-full rounded-lg" 
+                      />
+                    </div>
+                    {/* Número */}
+                    <div>
+                      <Label htmlFor="secondaryNumber" className="block text-sm font-medium">
+                        Número
+                      </Label>
+                      <Input 
+                        type="text" 
+                        id="secondaryNumber"
+                        name="secondaryNumber"
+                        className="mt-1 w-full rounded-lg" 
+                      />
+                    </div>
+                    {/* Complemento */}
+                    <div className="md:col-span-2">
+                      <Label htmlFor="secondaryComplement" className="block text-sm font-medium">
+                        Complemento
+                      </Label>
+                      <Input 
+                        type="text" 
+                        id="secondaryComplement"
+                        name="secondaryComplement"
+                        className="mt-1 w-full rounded-lg" 
+                        placeholder="Apto, Bloco, etc."
+                      />
+                    </div>
+                    {/* Estado */}
+                    <div>
+                      <Label htmlFor="secondaryState" className="block text-sm font-medium">
+                        Estado
+                      </Label>
+                      <Select onValueChange={(value) => handleSelectChange("secondaryState", value)}>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Selecione" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {UF_OPTIONS.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    {/* Cidade */}
+                    <div>
+                      <Label htmlFor="secondaryCity" className="block text-sm font-medium">
+                        Cidade
+                      </Label>
+                      <Input 
+                        type="text" 
+                        id="secondaryCity"
+                        name="secondaryCity"
+                        className="mt-1 w-full rounded-lg" 
                       />
                     </div>
                     {/* Observação */}
